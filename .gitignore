@@ -1,39 +1,47 @@
+### Frontend
 # Logs
-frontend/logs
-frontend/*.log
-frontend/npm-debug.log*
-frontend/yarn-debug.log*
-frontend/yarn-error.log*
-frontend/pnpm-debug.log*
-frontend/lerna-debug.log*
+Frontend/logs
+Frontend/*.log
+Frontend/npm-debug.log*
+Frontend/yarn-debug.log*
+Frontend/yarn-error.log*
+Frontend/pnpm-debug.log*
+Frontend/lerna-debug.log*
 
-frontend/node_modules
-frontend/.DS_Store
-frontend/dist
-frontend/dist-ssr
-frontend/coverage
-frontend/*.local
+Frontend/node_modules
+Frontend/.DS_Store
+Frontend/dist
+Frontend/dist-ssr
+Frontend/coverage
+Frontend/*.local
 
 # Editor directories and files
-frontend/.vscode/*
-frontend/!.vscode/extensions.json
-frontend/.idea
-frontend/*.suo
-frontend/*.ntvs*
-frontend/*.njsproj
-frontend/*.sln
-frontend/*.sw?
+Frontend/.vscode/*
+Frontend/!.vscode/extensions.json
+Frontend/.idea
+Frontend/*.suo
+Frontend/*.ntvs*
+Frontend/*.njsproj
+Frontend/*.sln
+Frontend/*.sw?
 
-frontend/*.tsbuildinfo
+Frontend/*.tsbuildinfo
 
-frontend/.eslintcache
+Frontend/.eslintcache
 
 # Cypress
-frontend/cypress/videos/
-frontend/cypress/screenshots/
+Frontend/cypress/videos/
+Frontend/cypress/screenshots/
 
 # Vitest
-frontend/__screenshots__/
+Frontend/__screenshots__/
 
 # Vite
-frontend/*.timestamp-*-*.mjs
+Frontend/*.timestamp-*-*.mjs
+
+### BACKEND
+Backend/node_modules
+# Keep environment variables out of version control
+Backend/.env
+
+Backend/generated/prisma
