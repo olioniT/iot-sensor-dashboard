@@ -1,9 +1,10 @@
 <template>
     <div id="menu">
-        <MenuItem icon="layout-grid" name="Dashboard"/>
-        <MenuItem icon="radio" name="Sensors"/>
-        <MenuItem icon="chart" name="Reports"/>
-        <MenuItem icon="user" name="Users"/>
+        <MenuItem to="/dashboard" icon="layout-grid" name="Dashboard"/>
+        <MenuItem to="/login" icon="layout-grid" name="Login"/>
+        <!-- <MenuItem icon="radio" name="Sensors"/> -->
+        <!-- <MenuItem icon="chart" name="Reports"/> -->
+        <!-- <MenuItem icon="user" name="Users"/> -->
     </div>
 </template>
 

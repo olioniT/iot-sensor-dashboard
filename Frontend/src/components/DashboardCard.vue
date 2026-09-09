@@ -33,22 +33,20 @@ export default {
 
 <style scoped>
 #card {
-    /* width: 100%; */
-    height: 10px;
+    width: calc(100% - 30px);
+    height: calc(100% - 30px);
     display: grid;
     grid-template-columns: 2fr 8fr;
     grid-template-rows: 1fr;
     gap: 15px;
     border: 3px solid rgb(223, 223, 223);
     border-radius: 10px;
-    /* padding: 15px; */
+    padding: 15px;
 }
 
 #icon {
-    width: 20px;
-    height: 20px;
-    /* height: 100%; */
-    /* aspect-ratio: 1 / 1; */
+    height: 100%;
+    aspect-ratio: 1 / 1;
     display: flex;
     justify-content: center;
     align-items: center;
