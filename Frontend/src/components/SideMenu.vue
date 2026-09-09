@@ -1,9 +1,9 @@
 <template>
     <div id="menu">
-        <MenuItem name="Dashboard"/>
-        <MenuItem name="Sensors"/>
-        <MenuItem name="Reports"/>
-        <MenuItem name="Users"/>
+        <MenuItem icon="layout-grid" name="Dashboard"/>
+        <MenuItem icon="radio" name="Sensors"/>
+        <MenuItem icon="chart" name="Reports"/>
+        <MenuItem icon="user" name="Users"/>
     </div>
 </template>
 

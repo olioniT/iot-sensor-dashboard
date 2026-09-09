@@ -1,9 +1,9 @@
 <template>
     <div id="view">
         <div id="overview">
-            <DashboardCard title="Total Sensors" subtitle="All sensors in all locations" data="24" />
-            <DashboardCard title="Active Sensors" subtitle="Current actively streaming sensors" data="19" />
-            <DashboardCard title="Total Locations" subtitle="Total number of locations" data="4" />
+            <DashboardCard icon="thermometer" title="Total Sensors" subtitle="All total sensors" data="24" />
+            <DashboardCard icon="activity" title="Active Sensors" subtitle="Actively streaming sensors" data="19" />
+            <DashboardCard icon="map-pin" title="Total Locations" subtitle="Total number of locations" data="4" />
         </div>
         <div id="body">
             <Table />
@@ -28,7 +28,7 @@ export default {
 
 <style scoped>
 #view {
-    width: 80vw;
+    width: 100vw;
     height: calc(100vh - 30px);
     display: flex;
     justify-content: center;
@@ -40,6 +40,7 @@ export default {
 
 #overview {
     width: 100%;
+    height: 17.5vh;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: 1fr;
@@ -48,6 +49,7 @@ export default {
 
 #body {
     width: 100%;
-    height: 100%;
+    height: 82.5vh;
+    overflow-y: scroll;
 }
 </style>

@@ -1,6 +1,7 @@
 <template>
     <div id="card">
         <div id="icon">
+            <component size="60%" color="rgb(27, 129, 224)" :is="cardIcon"/>
         </div>
         <div id="info">
             <p id="title">{{ this.title }}</p>
@@ -11,13 +12,20 @@
 </template>
 
 <script>
+import { icons } from '../icons';
+
 export default {
     name: "DashboardCard",
     components: {},
-    props: ["title", "subtitle", "data"],
+    props: ["icon", "title", "subtitle", "data"],
     data() {
         return {
-
+            
+        }
+    },
+    computed: {
+        cardIcon() {
+            return icons[this.icon]
         }
     }
 }
@@ -26,19 +34,24 @@ export default {
 <style scoped>
 #card {
     /* width: 100%; */
-    height: 100px;
+    height: 10px;
     display: grid;
     grid-template-columns: 2fr 8fr;
     grid-template-rows: 1fr;
     gap: 15px;
     border: 3px solid rgb(223, 223, 223);
     border-radius: 10px;
-    padding: 15px;
+    /* padding: 15px; */
 }
 
 #icon {
-    height: 100%;
-    aspect-ratio: 1 / 1;
+    width: 20px;
+    height: 20px;
+    /* height: 100%; */
+    /* aspect-ratio: 1 / 1; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background-color: rgb(90, 173, 250);
     border-radius: 10px;
 }

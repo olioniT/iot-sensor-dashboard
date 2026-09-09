@@ -1,13 +1,13 @@
 <template>
     <div id="item">
-        <div>
-            
-        </div>
+        <component :is="itemIcon" />
         <p id="text">{{ name }}</p>
     </div>
 </template>
 
 <script>
+import { icons } from '../icons';
+
 
 export default {
     name: "MenuItem",
@@ -16,6 +16,11 @@ export default {
     data() {
         return {
 
+        }
+    },
+    computed: {
+        itemIcon() {
+            return icons[this.icon]
         }
     }
 }
@@ -30,6 +35,7 @@ export default {
     align-items: center;
     background-color: inherit;
     cursor: pointer;
+    gap: 10px;
     border-radius: 5px;
     padding: 0px 15px;
 }

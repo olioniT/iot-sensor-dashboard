@@ -1,19 +1,18 @@
 <template>
-    <div id="app">
+    APP LOADED
+    <RouterView />
+    <!-- <div id="app">
         <SideMenu />
         <div id="views">
             <SensorsView />
         </div>
-    </div>
+    </div> -->
 </template>
 
 <script>
-import SideMenu from './components/SideMenu.vue';
-import SensorsView from './views/SensorsView.vue';
-
 export default {
     name: "App",
-    components: {SideMenu, SensorsView},
+    components: {},
     data() {
         return {
 
@@ -32,8 +31,9 @@ export default {
 }
 
 #views {
-    width: calc(100vw - var(--menu-width));
+    width: calc(100vw - (var(--menu-width) - 15px));
     height: 100vh;
+    padding: 0px 15px;
     display: flex;
     justify-content: center;
     align-items: center;
