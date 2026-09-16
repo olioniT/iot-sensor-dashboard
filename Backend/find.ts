@@ -7,3 +7,12 @@ export async function Sensors(prisma: any) {
   //console.log("All users:", JSON.stringify(allUsers, null, 2));
   return allSensors;
 }
+
+export async function Sensor(prisma: any, id: any) {
+  const Sensor = await prisma.sensor.findMany({
+    where: {
+      id: id,
+    },
+  });
+  return Sensor;
+}
