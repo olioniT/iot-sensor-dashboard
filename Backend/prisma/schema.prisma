@@ -7,18 +7,17 @@ datasource db {
   provider = "sqlite"
 }
 
-model User { 
+model Sensor { 
   id    Int     @id @default(autoincrement()) 
-  email String  @unique
-  name  String?
-  posts Post[]
+  name  String  @unique
+  temp  Int
+  location String
+  activestate Boolean @default(false)
 } 
 
-model Post { 
+model User { 
   id        Int     @id @default(autoincrement()) 
-  title     String
-  content   String?
-  published Boolean @default(false) 
-  author    User    @relation(fields: [authorId], references: [id]) 
-  authorId  Int
+  name String
+  admin Boolean @default(false)
+  password String
 } 
