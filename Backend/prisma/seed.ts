@@ -2,10 +2,12 @@ import "dotenv/config";
 import { Pool } from "pg";
 import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
 import { PrismaClient } from "../generated/prisma/client";
+
 const connectionString = `${process.env.DATABASE_URL}`;
 const pool = new Pool({ connectionString });
 const adapter = new PrismaBetterSqlite3({ url: "file:./dev.db" });
 const prisma = new PrismaClient({ adapter });
+
 async function main() {
   const alice = await prisma.user.upsert({
     where: { id: 1 },
@@ -17,6 +19,7 @@ async function main() {
       password: "Unencrypted",
     },
   });
+
   const bob = await prisma.user.upsert({
     where: { id: 2 },
     update: {},
@@ -27,7 +30,8 @@ async function main() {
       password: "Encrypted",
     },
   });
-    const senslab = await prisma.sensor.upsert({
+
+  const senslab = await prisma.sensor.upsert({
     where: { id: 1 },
     update: {},
     create: {
@@ -38,7 +42,8 @@ async function main() {
       activestate: true,
     },
   });
-      const sensoutside = await prisma.sensor.upsert({
+  
+  const sensoutside = await prisma.sensor.upsert({
     where: { id: 2 },
     update: {},
     create: {
@@ -49,8 +54,8 @@ async function main() {
       activestate: true,
     },
   });
-  console.log({ alice, bob, senslab, sensoutside });
 }
+
 main()
   .then(async () => {
     await prisma.$disconnect();

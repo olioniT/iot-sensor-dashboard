@@ -3,7 +3,7 @@
         <div id="header">
         </div>
         <div id="body">
-            <TableRow v-for="row in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]" />
+            <TableRow v-for="sensor in sensors" :id="sensor.id" :name="sensor.name" />
         </div>
     </div>
 </template>
@@ -17,8 +17,35 @@ export default {
     components: {TableRow},
     data() {
         return {
-            
+            sensors: []    
         }
+    },
+    methods: {
+        async getSensors() {
+            try {
+                const response = await fetch("http://localhost:3000/api/sensors", {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                    }
+                })
+
+                if (!response.ok) {
+                    throw new Error("Unable to retrieve sensors!")
+                }
+
+                // console.log(response)
+                const data = await response.json()
+                
+                return data
+            } catch (err) {
+                console.error(err)
+            }
+        }
+    },
+    async mounted() {
+        this.sensors = await this.getSensors()
+        console.log(this.sensors)
     }
 }
 </script>
@@ -41,7 +68,7 @@ export default {
     width: 100%;
     height: calc(82.5vh - 50px);
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     flex-direction: column;
     overflow-y: scroll;
