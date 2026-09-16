@@ -3,12 +3,12 @@
         <div id="form">
             <h1>Log In</h1>
             <div class="group">
-                <label for="">Username</label>
-                <input type="text">
+                <p class="error-msg" v-if="error">Please enter a valid username.</p>
+                <input type="text" name="username" placeholder="Username" :class="error ? 'error' : ''">
             </div>
             <div class="group">
-                <label for="">Password</label>
-                <input type="password">
+                <p class="error-msg" v-if="error">Please enter a valid password.</p>
+                <input type="password" name="password" placeholder="Password" :class="error ? 'error' : ''">
             </div>
             <button class="bg-red-300" @click="goToDashboard">Log In</button>
         </div>
@@ -18,6 +18,11 @@
 <script>
 export default {
     name: "LoginView",
+    data() {
+        return {
+            error: false
+        }
+    },
     methods: {
         goToDashboard() {
             this.$router.push("/dashboard")
@@ -37,9 +42,9 @@ export default {
 }
 
 #form {
-    width: 27.5vw;
-    height: 35vh;
-    padding: 35px 15px;
+    width: calc(20vw - 100px);
+    height: calc(45vh - 100px);
+    padding: 50px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -59,27 +64,27 @@ export default {
     gap: 5px;   
 }
 
-.group > label {
-    width: 50%;
-    margin-left: -10px;
-    font-size: 20px;
+.group > .error-msg {
+    color: rgb(255, 98, 98);
+    padding: 2.5px 0px;
 }
 
 .group > input {
-    width: 50%;
+    width: 100%;
     font-size: 16px;
-    padding: 5px;
+    padding: 15px;
     border-radius: 2.5px;
+    transition: 0.15s;
+    outline: 4px rgb(241, 241, 241) solid;
 }
 
-.group > input:focus {
-    outline: 4px rgb(140, 190, 255) solid;
-}
+.group > input:focus { outline: 6px rgb(140, 190, 255) solid; }
+.group > input.error { outline: 6px rgb(255, 168, 168) solid; }
 
 button {
-    width: 30%;
+    width: 100%;
     cursor: pointer;
-    padding: 10px 20px;
+    padding: 12.5px;
     background-color: rgb(75, 75, 255);
     color: white;
     border-radius: 5px;

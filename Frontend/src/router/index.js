@@ -1,10 +1,11 @@
 import { createRouter, createWebHashHistory } from "vue-router"
 
 import LoginView from "../views/LoginView.vue"
-import SensorsView from "../views/SensorsView.vue"
+import DashboardView from "../views/DashboardView.vue"
 
 import DefaultLayout from "../layouts/DefaultLayout.vue"
 import AuthLayout from "../layouts/AuthLayout.vue"
+import SensorsView from "../views/SensorsView.vue"
 
 const router = createRouter({
     history: createWebHashHistory(),
@@ -20,6 +21,21 @@ const router = createRouter({
         },
         {
             path: "/dashboard",
+            component: DashboardView,
+            meta: { layout: DefaultLayout }
+        },
+        {
+            path: "/sensors",
+            component: SensorsView,
+            meta: { layout: DefaultLayout }
+        },
+        {
+            path: "/reports",
+            component: SensorsView,
+            meta: { layout: DefaultLayout }
+        },
+        {
+            path: "/users",
             component: SensorsView,
             meta: { layout: DefaultLayout }
         },

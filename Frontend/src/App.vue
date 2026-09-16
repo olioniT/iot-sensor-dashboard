@@ -1,15 +1,25 @@
 <template>
+    <Toast v-if="toast"/>
     <component :is="currentLayout">
         <RouterView />
     </component>
 </template>
 
 <script>
+import Toast from './components/Toast.vue';
+
 export default {
     name: "App",
-    components: {},
+    components: {Toast},
     data() {
-        return {}
+        return {
+            toast: false
+        }
+    },
+    methods: {
+        showToast() {
+            this.toast = true
+        }
     },
     computed: {
         currentLayout() {

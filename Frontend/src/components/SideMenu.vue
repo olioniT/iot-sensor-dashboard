@@ -1,20 +1,19 @@
 <template>
     <div id="menu">
         <MenuItem to="/dashboard" icon="layout-grid" name="Dashboard"/>
+        <MenuItem to="/sensors" icon="radio" name="Sensors"/>
+        <MenuItem to="/reports" icon="chart" name="Reports"/>
+        <MenuItem to="/users" icon="user" name="Users"/>
         <MenuItem to="/login" icon="layout-grid" name="Login"/>
-        <!-- <MenuItem icon="radio" name="Sensors"/> -->
-        <!-- <MenuItem icon="chart" name="Reports"/> -->
-        <!-- <MenuItem icon="user" name="Users"/> -->
     </div>
 </template>
 
 <script>
 import MenuItem from './MenuItem.vue';
-import { LayoutGrid } from '@lucide/vue';
 
 export default {
     name: "SideMenu",
-    components: {MenuItem, LayoutGrid},
+    components: {MenuItem},
     data() {
         return {
 
@@ -28,6 +27,7 @@ export default {
     width: var(--menu-width);
     height: calc(100vh - 48px);
     padding: 24px 12px;
-    background-color: rgb(228, 228, 228);
+    background-color: var(--color-neutral-200);
+    background-color: rgb(241, 241, 241);
 }
 </style>
