@@ -1,41 +1,33 @@
 <template>
-    <div id="app">
-        <SideMenu />
-        <div id="views">
-            <SensorsView />
-        </div>
-    </div>
+    <Toast v-if="toast"/>
+    <component :is="currentLayout">
+        <RouterView />
+    </component>
 </template>
 
 <script>
-import SideMenu from './components/SideMenu.vue';
-import SensorsView from './views/SensorsView.vue';
+import Toast from './components/Toast.vue';
 
 export default {
     name: "App",
-    components: {SideMenu, SensorsView},
+    components: {Toast},
     data() {
         return {
-
+            toast: false
+        }
+    },
+    methods: {
+        showToast() {
+            this.toast = true
+        }
+    },
+    computed: {
+        currentLayout() {
+            return this.$router.currentRoute.value.meta.layout
         }
     }
 }
 </script>
 
 <style scoped>
-#app {
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-#views {
-    width: calc(100vw - var(--menu-width));
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
 </style>

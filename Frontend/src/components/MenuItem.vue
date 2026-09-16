@@ -1,21 +1,35 @@
 <template>
-    <div id="item">
-        <div>
-            
-        </div>
+    <RouterLink :to="to" id="item" :class="isCurrentRoute() ? 'active' : ''">
+        <component :is="itemIcon" />
         <p id="text">{{ name }}</p>
-    </div>
+    </RouterLink>
 </template>
 
 <script>
+import { icons } from '../icons';
+
 
 export default {
     name: "MenuItem",
     components: {},
-    props: ["icon", "name"],
+    props: ["to", "icon", "name"],
     data() {
         return {
-
+            
+        }
+    },
+    computed: {
+        itemIcon() {
+            return icons[this.icon]
+        }
+    },
+    methods: {
+        isCurrentRoute() {
+            if (this.to === this.$router.currentRoute.value.path) {
+                return true
+            } else {
+                return false
+            }
         }
     }
 }
@@ -30,8 +44,11 @@ export default {
     align-items: center;
     background-color: inherit;
     cursor: pointer;
+    gap: 10px;
     border-radius: 5px;
     padding: 0px 15px;
+    text-decoration: none;
+    color: black;
 }
 
 #item:hover { background-color: var(--item-hover); }

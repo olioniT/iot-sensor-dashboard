@@ -7,10 +7,13 @@
 
 :root {
   --menu-width: 300px;
-  --item-hover: rgb(206, 206, 206);
-  --item-active: rgb(243, 243, 243);
 }
 
-p, h1, h2, h3, h4, h5, h6, input, textarea, button {
+p, h1, h2, h3, h4, h5, h6, input, textarea, label, button {
   font-family: "Inter", sans-serif;
+}
+
+button, input, textarea {
+  outline: none;
+  border: none;
 }

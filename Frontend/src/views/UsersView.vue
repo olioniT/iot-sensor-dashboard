@@ -3,7 +3,7 @@
 
 <script>
 export default {
-    name: "SensorsView"
+    name: "UsersView"
 }
 </script>
 
