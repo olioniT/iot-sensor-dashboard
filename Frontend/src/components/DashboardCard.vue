@@ -1,12 +1,12 @@
 <template>
     <div id="card">
-        <div id="icon">
-            <component size="60%" color="rgb(27, 129, 224)" :is="cardIcon"/>
+        <div id="icon" :style="{backgroundColor: `var(--${color}-200)`, color: `var(--${color}-500)`}">
+            <component :is="cardIcon" size="48"/>
         </div>
         <div id="info">
-            <p id="title">{{ this.title }}</p>
-            <h1 id="data">{{ this.data }}</h1>
-            <p id="subtitle">{{ this.subtitle }}</p>
+            <p id="title">{{ title }}</p>
+            <p id="data">{{ data }}</p>
+            <p id="subtitle">{{ subtitle }}</p>
         </div>
     </div>
 </template>
@@ -17,7 +17,7 @@ import { icons } from '../icons';
 export default {
     name: "DashboardCard",
     components: {},
-    props: ["icon", "title", "subtitle", "data"],
+    props: ["icon", "title", "subtitle", "data", "color"],
     data() {
         return {
             
@@ -33,35 +33,39 @@ export default {
 
 <style scoped>
 #card {
-    width: calc(100% - 30px);
-    height: calc(100% - 30px);
-    display: grid;
-    grid-template-columns: 2fr 8fr;
-    grid-template-rows: 1fr;
-    gap: 15px;
-    border: 3px solid rgb(223, 223, 223);
-    border-radius: 10px;
-    padding: 15px;
-}
-
-#icon {
-    height: 100%;
-    aspect-ratio: 1 / 1;
+    width: calc(100% - 25px);
+    /* height: calc(100% - 25px); */
+    height: fit-content;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgb(90, 173, 250);
-    border-radius: 10px;
+    border-radius: 5px;
+    padding: 10px;
+    gap: 12.5px;
+    border: 2.5px solid var(--grey-200);
+}
+
+#icon {
+    height: 100px;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    align-items: center;
+    border-radius: 5px;
+    justify-content: center;
 }
 
 #info {
+    width: 100%;
+    height: fit-content;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: flex-start;
+    justify-content: space-between;
     gap: 5px;
+    /* background-color: lime; */
 }
 
-#title { font-size: 18px; }
-#subtitle { font-weight: 300; font-style: italic; }
+#title, #subtitle { font-size: 16px; }
+#subtitle { color: var(--grey-500); font-style: italic; }
+#data { font-size: 28px; font-weight: 800; }
 </style>

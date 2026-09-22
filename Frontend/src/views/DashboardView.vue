@@ -1,54 +1,69 @@
 <template>
     <div id="view">
-        <div id="overview">
-            <DashboardCard icon="thermometer" title="Total Sensors" subtitle="All total sensors" data="24" />
-            <DashboardCard icon="activity" title="Active Sensors" subtitle="Actively streaming sensors" data="19" />
-            <DashboardCard icon="map-pin" title="Total Locations" subtitle="Total number of locations" data="4" />
+        <div id="top">
+            <DashboardCard data="21" color="blue" icon="thermometer" title="Avg Temperature" subtitle="Average of all sensors"/>
+            <DashboardCard data="19" color="emerald" icon="radio-tower" title="Total Sensors" subtitle="11 online"/>
+            <DashboardCard data="8" color="orange" icon="map-pin" title="Locations" subtitle="Across all locations"/>
         </div>
-        <div id="body">
-            <Table />
+        <div id="bottom">
+            <div class="chart">
+            </div>
+            <div class="chart">
+            </div>
         </div>
     </div>
 </template>
 
 <script>
-import DashboardCard from '../components/DashboardCard.vue';
-import Table from '../components/Table.vue';
+import DashboardCard from "../components/DashboardCard.vue"
+
+import { useConfigStore } from "../stores/config.js"
 
 export default {
     name: "DashboardView",
-    components: {DashboardCard, Table},
-    data() {
-        return {
+    components: { DashboardCard },
 
-        }
-    }
 }
 </script>
 
 <style scoped>
 #view {
-    width: calc(100vw - var(--menu-width));
-    height: calc(100vh - 30px);
-    display: grid;
-    grid-template-rows: 1.5fr 8.5fr;
-    gap: 15px;
-    padding: 15px 0px;
-}
-
-#overview {
     width: 100%;
     height: 100%;
-    display: grid;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+    /* background-color: orange; */
+}
+
+#top, #bottom {
+    width: 100%;
+    gap: 10px;
+    display: flex;
+    /* background-color: yellow; */
+}
+
+#top { 
+    height: fit-content;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: 1fr;
-    gap: 25px;
 }
 
-#body {
+#bottom {
+    height: 100%;
+    display: grid;
+    gap: 15px;
+    grid-template-columns: 1.75fr 1.25fr;
+    grid-template-rows: 1fr;
+}
+
+.chart {
     width: 100%;
     height: 100%;
-    overflow-y: clip;
-    /* overflow-y: scroll; */
+    border-radius: 5px;
+    /* background-color: gold; */
+    border: 2.5px solid var(--grey-200);
 }
 </style>

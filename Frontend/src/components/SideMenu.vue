@@ -2,7 +2,7 @@
     <div id="menu">
         <MenuItem to="/dashboard" icon="layout-grid" name="Dashboard"/>
         <MenuItem to="/sensors" icon="radio" name="Sensors"/>
-        <MenuItem to="/reports" icon="chart" name="Reports"/>
+        <MenuItem to="/history" icon="chart" name="History"/>
         <MenuItem to="/users" icon="user" name="Users"/>
         <MenuItem to="/login" icon="layout-grid" name="Login"/>
     </div>
@@ -27,7 +27,6 @@ export default {
     width: var(--menu-width);
     height: calc(100vh - 48px);
     padding: 24px 12px;
-    background-color: var(--color-neutral-200);
-    background-color: rgb(241, 241, 241);
+    background-color: var(--grey-200);
 }
 </style>

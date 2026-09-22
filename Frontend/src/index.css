@@ -1,19 +1,21 @@
+@import "./styles/colors.css";
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
 * {
-  margin: 0;
-  padding: 0;
+    margin: 0;
+    padding: 0;
 }
 
 :root {
-  --menu-width: 300px;
+    --menu-width: 300px;
 }
 
 p, h1, h2, h3, h4, h5, h6, input, textarea, label, button {
-  font-family: "Inter", sans-serif;
+    font-family: "Inter", sans-serif;
 }
 
 button, input, textarea {
-  outline: none;
-  border: none;
+    outline: none;
+    border: none;
 }

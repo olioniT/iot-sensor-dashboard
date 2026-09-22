@@ -1,26 +1,20 @@
 <template>
     <RouterLink :to="to" id="item" :class="isCurrentRoute() ? 'active' : ''">
-        <component :is="itemIcon" />
+        <Icon :icon="icon" size="24px" :color="isCurrentRoute() ? 'var(--grey-800)' : 'var(--grey-700)'"/>
         <p id="text">{{ name }}</p>
     </RouterLink>
 </template>
 
 <script>
-import { icons } from '../icons';
-
+import Icon from './Icon.vue';
 
 export default {
     name: "MenuItem",
-    components: {},
+    components: {Icon},
     props: ["to", "icon", "name"],
     data() {
         return {
             
-        }
-    },
-    computed: {
-        itemIcon() {
-            return icons[this.icon]
         }
     },
     methods: {
@@ -38,7 +32,7 @@ export default {
 <style scoped>
 #item {
     width: calc(100% - 30px);
-    height: 55px;
+    height: 45px;
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -48,11 +42,11 @@ export default {
     border-radius: 5px;
     padding: 0px 15px;
     text-decoration: none;
-    color: black;
+    color: var(--grey-700);
 }
 
-#item:hover { background-color: var(--item-hover); }
-#item.active { background-color: var(--item-active); }
+#item:hover { background-color: var(--grey-300); }
+#item.active { background-color: var(--grey-100); color: var(--grey-800); }
 
 #text {
     font-weight: 600;

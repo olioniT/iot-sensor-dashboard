@@ -5,7 +5,9 @@ import {
     UserRound,
     Thermometer,
     Activity,
-    MapPin
+    MapPin,
+    RadioTower,
+    ChevronDown
 } from "@lucide/vue";
 
 export const icons = {
@@ -15,5 +17,7 @@ export const icons = {
     "user": UserRound,
     "thermometer": Thermometer,
     "activity": Activity,
-    "map-pin": MapPin
+    "map-pin": MapPin,
+    "radio-tower": RadioTower,
+    "chevron-down": ChevronDown
 }
