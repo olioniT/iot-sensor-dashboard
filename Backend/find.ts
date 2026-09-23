@@ -1,18 +1,43 @@
 export async function Sensors(prisma: any) {
-  // Fetch all users with their posts
-  // const allUsers = await prisma.user.findMany();
   const allSensors = await prisma.sensor.findMany();
-
-  //console.log("All sensors:", JSON.stringify(allSensors, null, 2));
-  //console.log("All users:", JSON.stringify(allUsers, null, 2));
   return allSensors;
 }
 
+export async function Users(prisma: any) {
+  const allUsers = await prisma.user.findMany();
+  return allUsers;
+}
+
 export async function Sensor(prisma: any, id: any) {
-  const Sensor = await prisma.sensor.findMany({
+let count = await prisma.sensor.count({
+    where: {
+      id: id,
+    }
+  });
+  let sensor = await prisma.sensor.findMany({
     where: {
       id: id,
     },
   });
-  return Sensor;
+  if (count == 0) {
+    let sensor = null;
+  }
+  return sensor;
+}
+
+export async function User(prisma: any, id: any) {
+let count = await prisma.user.count({
+    where: {
+      id: id,
+    }
+  });
+  let user = await prisma.user.findMany({
+    where: {
+      id: id,
+    },
+  });
+  if (count == 0) {
+    let user = null;
+  }
+  return user;
 }

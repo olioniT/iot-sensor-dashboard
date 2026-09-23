@@ -1,5 +1,13 @@
 export async function CreateSensor(prisma: any, name: any, temp: any, location: any, activestate: any) {
-  const sensor = await prisma.sensor.create({
+  let count = await prisma.sensor.count({
+    where: {
+      name: name,
+    }
+  });
+  if (count == 1) {
+    return "Failed";
+  }
+  await prisma.sensor.create({
     data: {
       name: name,
       temp: temp,
@@ -7,5 +15,16 @@ export async function CreateSensor(prisma: any, name: any, temp: any, location: 
       activestate: activestate,
     },
   });
-  return "All good!";
+  return "Success";
+}
+
+export async function CreateUser(prisma: any, name: any, admin: any, password: any) {
+  await prisma.sensor.create({
+    data: {
+      name: name,
+      admin: admin,
+      password: password,
+    },
+  });
+  return "Success";
 }

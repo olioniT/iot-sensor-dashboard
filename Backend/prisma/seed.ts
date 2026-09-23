@@ -13,6 +13,7 @@ async function main() {
     create: {
       id: 1,
       name: "Alice",
+      username: "Alice1",
       admin: false,
       password: "Unencrypted",
     },
@@ -23,6 +24,7 @@ async function main() {
     create: {
       id: 2,
       name: "Bob",
+      username: "Administrator_Floor",
       admin: true,
       password: "Encrypted",
     },

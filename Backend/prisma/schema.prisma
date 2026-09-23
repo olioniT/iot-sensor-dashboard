@@ -17,7 +17,15 @@ model Sensor {
 
 model User { 
   id        Int     @id @default(autoincrement()) 
-  name String
+  name String?
+  username String @unique
   admin Boolean @default(false)
   password String
+} 
+
+model TemperatureReadings { 
+  id        Int     @id @default(autoincrement()) 
+  sensorid Int
+  temperature Int
+  time String
 } 
