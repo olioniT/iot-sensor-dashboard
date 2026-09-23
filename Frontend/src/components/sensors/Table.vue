@@ -5,15 +5,17 @@
             <!-- <p id="title">Temperature Sensors</p> -->
         </div>
         <div id="body">
-            <TableRow id="1" name="Sensor 1" temp="20" location="Main Office" status="active"/>
-            <TableRow id="2" name="Sensor 2" temp="20" location="Hallway 1" status="inactive"/>
-            <!-- <TableRow v-if="sensors.length > 0" v-for="sensor in sensors" :id="sensor.id" :name="sensor.name" />
-            <p id="no-sensors" v-else>No sensors found, please contact your admin to create one.</p> -->
+            <!-- <TableRow id="1" name="Sensor 1" temp="20" location="Main Office" status="active"/> -->
+            <!-- <TableRow id="2" name="Sensor 2" temp="20" location="Hallway 1" status="inactive"/> -->
+            <TableRow v-if="sensors.length > 0" v-for="sensor in sensors" :sensor="sensor" />
+            <p id="no-sensors" v-else>No sensors found, please contact your admin to create one.</p>
         </div>
     </div>
 </template>
 
 <script>
+import { useSensorStore } from '../../stores/sensors.js';
+
 import TableRow from './TableRow.vue';
 
 export default {
@@ -25,31 +27,8 @@ export default {
             sensors: []
         }
     },
-    methods: {
-        async getSensors() {
-            try {
-                const response = await fetch("http://localhost:3000/api/sensors", {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                    }
-                })
-
-                if (!response.ok) {
-                    throw new Error("Unable to retrieve sensors!")
-                }
-
-                const data = await response.json()
-                
-                return data
-            } catch (err) {
-                console.error(err)
-            }
-        }
-    },
-    async mounted() {
-        this.sensors = await this.getSensors()
-        console.log(this.sensors)
+    created() {
+        this.sensors = useSensorStore().getAllSensors
     }
 }
 </script>

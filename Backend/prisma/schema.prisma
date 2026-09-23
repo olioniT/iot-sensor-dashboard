@@ -8,16 +8,34 @@ datasource db {
 }
 
 model Sensor { 
-  id    Int     @id @default(autoincrement()) 
-  name  String  @unique
-  temp  Int
+  id Int @id @default(autoincrement()) 
+  name String @unique
   location String
-  activestate Boolean @default(false)
+  status String @default("active")
+  min_temperature Decimal
+  max_temperature Decimal
+  update_interval Int
+  created_at String
+  created_by Int
 } 
 
+model SensorReadings {
+  id Int @id @default(autoincrement())
+  reading Decimal
+  recorded_at String
+  sensor_id Int
+}
+
 model User { 
-  id        Int     @id @default(autoincrement()) 
-  name String
-  admin Boolean @default(false)
+  id Int @id @default(autoincrement())
+  name String?
+  username String @unique
   password String
-} 
+  role Int 
+}
+
+model Role {
+  id Int @id @default(autoincrement())
+  name String @unique
+  description String
+}

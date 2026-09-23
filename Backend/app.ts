@@ -2,10 +2,12 @@ import cors from "cors"
 import express from "express"
 import { prisma } from "./prisma/prisma"
 
-const app = express();
 const PORT = process.env.PORT || 3000;
 
+const app = express();
+
 app.use(cors())
+app.use(express.json())
 
 app.get('/', async (req, res) => {
   res.json({
@@ -14,8 +16,6 @@ app.get('/', async (req, res) => {
 })
 
 app.get('/api/sensors', async (req, res) => {
-  console.log("RECEIVED PING FOR SENSORS!")
-
   let sensors = await prisma.sensor.findMany();
   console.log(sensors)
 

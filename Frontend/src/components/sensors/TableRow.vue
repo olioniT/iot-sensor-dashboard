@@ -1,12 +1,12 @@
 <template>
     <div id="row">
-        <p>{{ id }}</p>
-        <p>{{ name }}</p>
-        <p>{{ this.configStore.formatTemp(temp) }}</p>
-        <p>{{ location }}</p>
-        <div :class="'status ' + status">
-            <p>{{ status.toUpperCase() }}</p>
+        <p>{{ sensor.id }}</p>
+        <p>{{ sensor.name }}</p>
+        <p>{{ sensor.location }}</p>
+        <div :class="'status ' + sensor.status">
+            <p>{{ sensor.status }}</p>
         </div>
+        <p>{{ sensor.created_at }}</p>
     </div>
 </template>
 
@@ -15,7 +15,7 @@ import { useConfigStore } from '../../stores/config';
 
 export default {
     name: "TableRow",
-    props: ["id", "name", "temp", "location", "status"],
+    props: ["sensor"],
     components: {},
     data() {
         return {
