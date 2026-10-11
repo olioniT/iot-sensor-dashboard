@@ -1,7 +1,7 @@
 <template>
     <div id="card">
-        <div id="icon" :style="{backgroundColor: `var(--${color}-200)`, color: `var(--${color}-500)`}">
-            <component :is="cardIcon" size="48"/>
+        <div id="icon" :style="{backgroundColor: `var(--${color}-200)`}">
+            <Icon :icon="icon" size="48px" :color="`var(--${color}-500)`"/>
         </div>
         <div id="info">
             <p id="title">{{ title }}</p>
@@ -12,20 +12,15 @@
 </template>
 
 <script>
-import { icons } from '../icons';
+import Icon from '@/components/Icon.vue';
 
 export default {
     name: "DashboardCard",
-    components: {},
+    components: {Icon},
     props: ["icon", "title", "subtitle", "data", "color"],
     data() {
         return {
             
-        }
-    },
-    computed: {
-        cardIcon() {
-            return icons[this.icon]
         }
     }
 }
@@ -42,7 +37,6 @@ export default {
     border-radius: 5px;
     padding: 10px;
     gap: 12.5px;
-    border: 2.5px solid var(--grey-200);
 }
 
 #icon {

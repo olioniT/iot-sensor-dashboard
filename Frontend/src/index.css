@@ -1,4 +1,5 @@
 @import "./styles/colors.css";
+@import "./styles/classes.css";
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
@@ -8,14 +9,24 @@
 }
 
 :root {
-    --menu-width: 300px;
+    --menu-width: 225px;
+    --view-width: calc(100vw - var(--menu-width));
 }
 
 p, h1, h2, h3, h4, h5, h6, input, textarea, label, button {
+    color: var(--black);
     font-family: "Inter", sans-serif;
 }
 
 button, input, textarea {
     outline: none;
     border: none;
+    border-radius: 2.5px;
+    font-size: 16px;
+    /* background-color: var(--grey-700); */
 }
+
+button { cursor: pointer; }
+
+input, textarea { outline: 0px var(--white) solid; }
+input:focus, textarea:focus { outline: 6px var(--blue-300) solid; }

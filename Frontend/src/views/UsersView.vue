@@ -1,9 +1,13 @@
 <template>
+    <Table />
 </template>
 
 <script>
+import Table from '@/components/sensors/Table.vue';
+
 export default {
-    name: "UsersView"
+    name: "UsersView",
+    components: {Table}
 }
 </script>
 

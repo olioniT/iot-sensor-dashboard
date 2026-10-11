@@ -2,9 +2,9 @@
     <div id="app">
         <SideMenu />
         <div id="view">
-            <div id="title">
-                <h1 v-if="title">{{ this.title }}</h1>
-                <p v-if="subtitle">{{ this.subtitle }}</p>
+            <div id="info">
+                <h1>{{ this.layoutTitle }}</h1>
+                <p>{{ this.layoutSubtitle }}</p>
             </div>
             <slot></slot>
         </div>
@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import SideMenu from "../components/SideMenu.vue"
+import SideMenu from "@/components/sidemenu/SideMenu.vue"
 
 export default {
     name: "DefaultLayout",
@@ -23,13 +23,7 @@ export default {
             subtitle: ""
         }
     },
-    beforeRouteUpdate() {
-        console.log("AHHHH")
-
-        this.layoutTitle()
-        this.layoutSubtitle()
-    },
-    methods: {
+    computed: {
         layoutTitle() {
             return this.$router.currentRoute.value.meta.title
         },
@@ -57,7 +51,15 @@ export default {
     justify-content: center;
     align-items: flex-start;
     flex-direction: column;
-    /* background-color: red; */
-    gap: 5px;
+    gap: 10px;
+}
+
+#info {
+    width: 100%;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
 }
 </style>

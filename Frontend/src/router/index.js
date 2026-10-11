@@ -1,3 +1,4 @@
+import { useUserStore } from '../stores/user.js';
 import { createRouter, createWebHashHistory } from "vue-router"
 
 import LoginView from "../views/LoginView.vue"
@@ -18,26 +19,32 @@ const router = createRouter({
         },
         {
             path: "/login",
+            name: "login",
             component: LoginView,
             meta: { layout: AuthLayout }
         },
         {
             path: "/dashboard",
+            name: "dashboard",
             component: DashboardView,
-            meta: { layout: DefaultLayout }
+            meta: { title: "Main Dashboard", subtitle: "Live overview of the current sensor data.", layout: DefaultLayout }
         },
         {
             path: "/sensors",
+            name: "sensors",
             component: SensorsView,
-            meta: { layout: DefaultLayout }
+            meta: { title: "Sensors View", subtitle: "Live overview of all sensors.", layout: DefaultLayout }
         },
         {
-            path: "/history",
+            path: "/history/sensor/:id?",
+            name: "history",
             component: HistoryView,
-            meta: { layout: DefaultLayout }
+            props: true,
+            meta: { title: "History View", subtitle: "Live overview of each sensor history.", layout: DefaultLayout },
         },
         {
             path: "/users",
+            name: "users",
             component: UsersView,
             meta: { layout: DefaultLayout }
         },
@@ -48,7 +55,15 @@ const router = createRouter({
     ]
 })
 
-router.beforeEach((to) => {
+router.beforeEach(async (to) => {
+    const userStore = useUserStore()
+
+    const isLoggedIn = userStore.userIsLoggedIn()
+
+    if (!isLoggedIn && to.name !== "login") {
+        return "/login"
+    }
+    return true
     // authentication protection here
 })
 

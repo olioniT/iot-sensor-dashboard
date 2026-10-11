@@ -1,6 +1,6 @@
 generator client {
   provider = "prisma-client"
-  output   = "../generated/prisma"
+  output = "../generated/prisma"
 }
 
 datasource db {
@@ -17,12 +17,13 @@ model Sensor {
   update_interval Int
   created_at String
   created_by Int
+  color String @default("#000000")
 } 
 
 model SensorReadings {
   id Int @id @default(autoincrement())
   reading Decimal
-  recorded_at String
+  recorded_at DateTime @default(now())
   sensor_id Int
 }
 

@@ -1,55 +1,38 @@
-<template>
-    <Toast v-if="toast"/>
+<template id="app">
+    <Toaster/>
     <component :is="currentLayout">
         <RouterView />
     </component>
 </template>
 
 <script>
-import { useSensorStore } from './stores/sensors.js';
+import Icon from './components/Icon.vue';
 
-import Toast from './components/Toast.vue';
+import Toaster from '@/components/Toaster.vue';
+
+import { useWebSocket } from './composables/useWebSocket.js';
 
 export default {
     name: "App",
-    components: {Toast},
+    components: {Toaster, Icon},
     data() {
-        return {
-            toast: false
-        }
-    },
-    methods: {
-        showToast() {
-            this.toast = true
-        }
+        return {}
     },
     computed: {
         currentLayout() {
             return this.$router.currentRoute.value.meta.layout
         }
     },
-    async mounted() {
-        try {
-            const response = await fetch("http://localhost:3000/api/sensors", {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                }
-            })
+    mounted() {
+        const ws = useWebSocket()
 
-            if (!response.ok) {
-                throw new Error("Unable to retrieve sensors!")
-            }
-
-            const data = await response.json()
-            
-            useSensorStore().storeAllSensors(data)
-        } catch (err) {
-            console.error(err)
-        }
+        ws.connect()
     }
 }
 </script>
 
 <style scoped>
+#app {
+    background-color: var(--white);
+}
 </style>

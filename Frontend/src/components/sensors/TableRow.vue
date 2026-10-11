@@ -1,17 +1,20 @@
 <template>
-    <div id="row">
+    <div id="row" @click="() => showHistoryOfSensor(sensor.id)">
         <p>{{ sensor.id }}</p>
         <p>{{ sensor.name }}</p>
+        <!-- <p>{{ sensorStore.getCurrentReadings.filter(r => r.sensor_id === sensor.id)}}</p> -->
+        <p>{{ reading }}</p>
         <p>{{ sensor.location }}</p>
         <div :class="'status ' + sensor.status">
-            <p>{{ sensor.status }}</p>
+            <p>{{ sensor.status.toUpperCase() }}</p>
         </div>
         <p>{{ sensor.created_at }}</p>
     </div>
 </template>
 
 <script>
-import { useConfigStore } from '../../stores/config';
+import { useSensorStore } from '@/stores/sensors';
+import { useConfigStore } from '@/stores/config';
 
 export default {
     name: "TableRow",
@@ -19,7 +22,20 @@ export default {
     components: {},
     data() {
         return {
+            sensorStore: useSensorStore(),
             configStore: useConfigStore()
+        }
+    },
+    methods: {
+        showHistoryOfSensor(id) {
+            this.$router.push(`/history/sensor/${id}`)
+        }
+    },
+    computed: {
+        reading() {
+            const temp = this.sensorStore.getCurrentReadings.find(r => r.sensor_id === this.sensor.id)
+
+            return temp ? this.configStore.formatTemp(temp.reading) : this.configStore.formatTemp(0)
         }
     }
 }
@@ -31,12 +47,9 @@ export default {
     height: 40px;
     display: grid;
     grid-template-rows: 1fr;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(6, 1fr);
     justify-content: center;
     align-items: center;
-    /* display: flex;
-    align-items: center;
-    justify-content: space-evenly; */
     font-size: 18px;
     background-color: inherit;
     border-bottom: 2px solid rgb(231, 231, 231);

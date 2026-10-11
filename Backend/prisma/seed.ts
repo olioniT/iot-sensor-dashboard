@@ -1,4 +1,5 @@
 import "dotenv/config";
+import bcrypt from "bcrypt"
 import { prisma } from "./prisma";
 
 async function createRole(
@@ -19,11 +20,13 @@ async function createUser(
     password: string, 
     role: number
 ) {
+    const hashedPassword = await bcrypt.hash(password, 10)
+
     await prisma.user.create({
         data: {
             name: name,
             username: username,
-            password: password,
+            password: hashedPassword,
             role: role,
         },
     });
@@ -42,6 +45,7 @@ async function createSensor(
     const date = timestamp.split("T")[0]
     const time = `${Number(timestamp.split("T")[1].split(".")[0].slice(0, 2)) + 12}:${timestamp.split("T")[1].split(".")[0].slice(3, 5)}`
     const datetime = `${date} ${time}`
+    const color = `#${Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0')}`
 
     await prisma.sensor.create({
         data: {
@@ -52,27 +56,35 @@ async function createSensor(
             max_temperature: maxTemp,
             update_interval: updateInterval,
             created_at: datetime,
-            created_by: createdBy
+            created_by: createdBy,
+            color: color
         }
     })
 }
 
-async function createReadings(sensorReadings: {reading: number, sensorID: number}[]) {
-    const timestamp = new Date().toISOString()
-    const date = timestamp.split("T")[0]
-    const time = `${Number(timestamp.split("T")[1].split(".")[0].slice(0, 2)) + 12}:${timestamp.split("T")[1].split(".")[0].slice(3, 5)}`
-    const datetime = `${date} ${time}`
+async function generateHistoricalReadings(sensorIDs: number[], intervalMinutes = 10) {
+    const now = Date.now()
+    const windowMs = 24 * 60 * 60 * 1000
+    const stepMs = intervalMinutes * 60 * 1000
 
-    sensorReadings.forEach(async (sensorReading) => {
-        await prisma.sensorReadings.create({
-            data: {
-                reading: sensorReading.reading,
-                recorded_at: datetime,
-                sensor_id: sensorReading.sensorID
-            }
-        })
-    })
-}   
+    const data: { sensor_id: number; reading: number; recorded_at: Date }[] = []
+
+    for (const sensor_id of sensorIDs) {
+        let temperature = 20 + Math.random() * 10
+
+        for (let t = now - windowMs; t <= now; t += stepMs) {
+            temperature = Math.min(30, Math.max(20, temperature + (Math.random() - 0.5) * 2))
+
+            data.push({
+                sensor_id,
+                reading: Math.round(temperature * 10) / 10,
+                recorded_at: new Date(t)
+            })
+        }
+    }
+
+    await prisma.sensorReadings.createMany({ data })
+}
 
 async function main() {
     await prisma.role.deleteMany({})
@@ -85,6 +97,7 @@ async function main() {
 
     await createUser("Olioni", "22358326", "password", 1)
     await createUser("Dillon", "25377610", "password", 1)
+    await createUser("John", "00000001", "password", 2)
 
     await createSensor("Central Sensor", "Main Office", "active", 15, 25, 30, 1)
     await createSensor("Cubicle - 1", "Cubicle Offices", "active", 15, 25, 30, 1)
@@ -92,13 +105,7 @@ async function main() {
     await createSensor("Cubicle - 3", "Cubicle Offices", "inactive", 15, 25, 30, 1)
     await createSensor("Front Door", "Reception", "active", 15, 25, 30, 2)
 
-    await createReadings([
-        {reading: 20.0, sensorID: 1},
-        {reading: 20.8, sensorID: 2},
-        {reading: 21.9, sensorID: 3},
-        {reading: 19.5, sensorID: 4},
-        {reading: 21.0, sensorID: 5},
-    ])
+    await generateHistoricalReadings([1, 2, 3, 4, 5])
 }
 
 main().catch(console.error).finally(() => prisma.$disconnect())
