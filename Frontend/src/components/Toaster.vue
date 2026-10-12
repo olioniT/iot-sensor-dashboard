@@ -67,6 +67,7 @@ export default {
     gap: 10px;
     position: relative;
     pointer-events: all;
+    z-index: 10000000;
 }
 
 .error { background-color: var(--red-300); border: solid 3px var(--red-400) }

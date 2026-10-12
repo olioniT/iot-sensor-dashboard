@@ -53,11 +53,14 @@ export default {
                         time: {
                             unit: "hour",
                             tooltipFormat: "HH:mm",
+                        },
+                        ticks: {
+                            color: "white"
                         }
                     },
                     y: {
-                        min: 15,
-                        max: 35,
+                        min: 10,
+                        max: 30,
                         ticks: {
                             stepSize: 5
                         }
@@ -125,6 +128,7 @@ export default {
                 datasets: [{
                     label: "Sensors by Status",
                     data: Object.values(this.sensors.numOfSensorsByStatus),
+                    borderColor: "#2a3546",
                     backgroundColor: ["rgb(5, 223, 114)", "rgb(255, 100, 103)"],
                     hoverOffset: 4
                 }]
@@ -136,7 +140,8 @@ export default {
 
 <style scoped>
 .line-chart, .donut-chart, #card {
-    border: 2.5px solid var(--grey-200);
+    border-radius: 5px;
+    background-color: var(--grey-750);
 }
 
 #view {

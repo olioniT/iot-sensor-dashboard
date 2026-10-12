@@ -61,5 +61,6 @@ export default {
     justify-content: center;
     align-items: flex-start;
     flex-direction: column;
+    gap: 5px;
 }
 </style>

@@ -56,9 +56,6 @@ export default {
         }
     },
     methods: {
-        goToDashboard() {
-            this.$router.push("/dashboard")
-        },
         verifyInput(refType) {
             const inputValue = this.$refs[refType].value
 
@@ -73,7 +70,7 @@ export default {
             const pass = this.$refs.password.value
 
             if (user === "" || pass === "") {
-                throw new Error("Invalid credentials.")
+                throw new Error("Please enter a valid username and password.")
             }
 
             try {
@@ -111,7 +108,7 @@ export default {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    background-color: var(--grey-300);
+    background-color: var(--grey-50);
 }
 
 #form {
@@ -163,7 +160,7 @@ export default {
     font-size: 16px;
     padding: 15px;
     transition: 0.15s;
-    background-color: var(--grey-100);
+    background-color: var(--grey-200);
 }
 
 .group > input.error {

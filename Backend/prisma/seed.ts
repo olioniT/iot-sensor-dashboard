@@ -41,11 +41,13 @@ async function createSensor(
     updateInterval: number,
     createdBy: number
 ) {
+    const chartColors = [ "#2563eb", "#f97316", "#10b981", "#e11d48", "#8b5cf6", "#eab308", "#06b6d4", "#ec4899", "#64748b", "#84cc16"];
+
     const timestamp = new Date().toISOString()
     const date = timestamp.split("T")[0]
     const time = `${Number(timestamp.split("T")[1].split(".")[0].slice(0, 2)) + 12}:${timestamp.split("T")[1].split(".")[0].slice(3, 5)}`
     const datetime = `${date} ${time}`
-    const color = `#${Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0')}`
+    const color = chartColors[Math.floor(Math.random() * chartColors.length)]
 
     await prisma.sensor.create({
         data: {

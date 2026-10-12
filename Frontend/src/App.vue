@@ -33,6 +33,6 @@ export default {
 
 <style scoped>
 #app {
-    background-color: var(--white);
+    background-color: var(--grey-800);
 }
 </style>

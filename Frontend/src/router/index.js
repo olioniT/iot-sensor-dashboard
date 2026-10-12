@@ -33,20 +33,20 @@ const router = createRouter({
             path: "/sensors",
             name: "sensors",
             component: SensorsView,
-            meta: { title: "Sensors View", subtitle: "Live overview of all sensors.", layout: DefaultLayout }
+            meta: { title: "Sensors Overview", subtitle: "Live overview of all sensors.", layout: DefaultLayout }
         },
         {
             path: "/history/sensor/:id?",
             name: "history",
             component: HistoryView,
             props: true,
-            meta: { title: "History View", subtitle: "Live overview of each sensor history.", layout: DefaultLayout },
+            meta: { title: "History View", subtitle: "Trends and statistics for each sensor over time.", layout: DefaultLayout },
         },
         {
             path: "/users",
             name: "users",
             component: UsersView,
-            meta: { layout: DefaultLayout }
+            meta: { title: "User View", subtitle: "", layout: DefaultLayout }
         },
         {
             path: '/:pathMatch(.*)*',

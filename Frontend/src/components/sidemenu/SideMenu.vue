@@ -84,7 +84,7 @@ export default {
     text-decoration: none;
 }
 
-/* #item:hover { background-color: var(--grey-600); } */
+#item:hover { background-color: var(--grey-950); }
 #item.active { background-color: var(--grey-800); }
 
 #text {
