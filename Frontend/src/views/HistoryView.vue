@@ -2,7 +2,7 @@
     <div id="view">
         <div id="left">
             <div id="filters">
-                <input type="text" id="search">
+                <input type="text" id="search" placeholder="Search by name">
                 <DropDown placeholder="Select a Location..." :options="this.locations" />
             </div>
             <div id="list">
@@ -15,7 +15,6 @@
         <div id="right">
             <div class="chart-container">
                 <Line v-if="Number(this.id) !== 0" :data="lineData" :options="lineOptions"/>
-            <!-- {{ this.readings }} -->
             </div>
         </div>
     </div>
@@ -113,7 +112,7 @@ export default {
     display: grid;
     grid-template-columns: 1.5fr 4fr;
     grid-template-rows: 1fr;
-    gap: 10px;
+    gap: 15px;
 }
 
 #left {
@@ -123,7 +122,7 @@ export default {
     grid-template-rows: 1.4fr 9fr;
     grid-template-columns: 1fr;
     border-radius: 5px;
-    border: 2.5px solid var(--grey-200);
+    border: 2.5px solid var(--grey-750);
 }
 
 #filters {
@@ -136,17 +135,17 @@ export default {
     gap: 10px;
     border-top-left-radius: 2.5px;
     border-top-right-radius: 2.5px;
-    background-color: var(--grey-200);
+    background-color: var(--grey-750);
     padding: 15px;
 }
 
 #search {
     width: calc(100% - 10px);
-    height: calc(100% - 20px);
-    /* padding: 5px 10px; */
+    height: 35px;
     border-radius: 2.5px;
     font-size: 14px;
-    background-color: var(--grey-50);
+    padding: 0px 10px;
+    background-color: var(--grey-700);
 }
 
 .card {
@@ -154,36 +153,28 @@ export default {
     cursor: pointer;
 }
 
-.card:hover {
-    background-color: var(--grey-100);
-}
+.active { background-color: var(--grey-700); }
 
-.active {
-    background-color: var(--grey-200);
-}
-
-.name {
-    font-size: 16px;
-}
+.name { font-size: 16px; }
 
 .location {
     font-size: 12px;
     font-style: italic;
-    color: var(--grey-700);
+    color: var(--grey-400);
 }
 
 #right {
     box-sizing: border-box;
     width: 100%;
-    height: 100%;
+    height: calc(100% - 60px);
     min-width: 0;
-    min-height: 0;
-    padding: 10px;
+    min-height: 100%;
+    padding: 30px;
     border-radius: 5px;
     display: flex;
     flex-direction: column;
     gap: 20px;
-    border: 2.5px solid var(--grey-200);
+    border: 2.5px solid var(--grey-750);
 }
 
 .chart-container {

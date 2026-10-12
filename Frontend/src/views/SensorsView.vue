@@ -1,19 +1,32 @@
 <template>
     <div id="view">
-        <Table />
+        <Table :tableConfig="tableConfig"/>
     </div>
 </template>
 
 <script>
-import Table from '../components/sensors/Table.vue';
+import { useSensorStore } from '@/stores/sensors.js';
+
+import Table from '@/components/sensors/Table.vue';
 
 export default {
     name: "SensorsView",
     components: {Table},
     data() {
         return {
-
+            tableConfig: {
+                data: [],
+                rowConfig: {
+                    keys: ["id", "name", "location", "status"],
+                    rowCallback: (id) => { this.$router.push(`/history/sensor/${id}`) }
+                },
+                searchPlaceholder: "Search by name or ID",
+                emptyPlaceholder: "No sensors found. Please contact your admin to create one.",
+            }
         }
+    },
+    mounted() {
+        this.tableConfig.data = useSensorStore().getAllSensors
     }
 }
 </script>

@@ -1,33 +1,22 @@
 <template>
     <div id="table">
         <div id="header">
-            <input type="text" id="search" placeholder="Search by ID or name">
-            <p id="title">Temperature Sensors</p>
+            <input type="text" id="search" :placeholder="this.tableConfig.searchPlaceholder">
         </div>
         <div id="body">
-            <TableRow v-if="sensors.length > 0" v-for="sensor in sensors" :sensor="sensor" />
-            <p id="no-sensors" v-else>No sensors found, please contact your admin to create one.</p>
+            <TableRow v-if="this.tableConfig.data.length > 0" v-for="row in this.tableConfig.data" :data="row" :rowConfig="this.tableConfig.rowConfig" />
+            <p id="no-sensors" v-else>{{ this.tableConfig.emptyPlaceholder }}</p>
         </div>
     </div>
 </template>
 
 <script>
-import { useSensorStore } from '../../stores/sensors.js';
-
 import TableRow from './TableRow.vue';
 
 export default {
     name: "Table",
-    props: [],
-    components: {TableRow},
-    data() {
-        return {
-            sensors: []
-        }
-    },
-    created() {
-        this.sensors = useSensorStore().getAllSensors
-    }
+    props: ["tableConfig"],
+    components: {TableRow}
 }
 </script>
 
@@ -48,7 +37,7 @@ export default {
     align-items: center;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
-    background-color: var(--grey-200);
+    background-color: var(--grey-750);
     padding: 15px;
 }
 

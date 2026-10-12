@@ -60,6 +60,6 @@ export default {
 }
 
 #title, #subtitle { font-size: 16px; }
-#subtitle { color: var(--grey-500); font-style: italic; }
+#subtitle { color: var(--grey-400); font-style: italic; }
 #data { font-size: 28px; font-weight: 800; }
 </style>

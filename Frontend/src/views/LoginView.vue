@@ -108,7 +108,6 @@ export default {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    background-color: var(--grey-50);
 }
 
 #form {
@@ -150,7 +149,7 @@ export default {
     width: 100%;
     height: fit-content;
     padding: 4px 0px;
-    color: var(--grey-500);
+    color: var(--grey-350);
     margin-bottom: 2.5px;
 }
 
@@ -160,7 +159,7 @@ export default {
     font-size: 16px;
     padding: 15px;
     transition: 0.15s;
-    background-color: var(--grey-200);
+    background-color: var(--grey-700);
 }
 
 .group > input.error {

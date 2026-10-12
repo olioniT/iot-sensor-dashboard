@@ -181,7 +181,7 @@ export default {
     height: 100%;
     min-width: 0;
     min-height: 0;
-    padding: 10px;
+    padding: 30px;
     border-radius: 5px;
     display: flex;
     flex-direction: column;
@@ -189,6 +189,7 @@ export default {
 }
 
 .chart-title {
+    width: 100%;
     margin: 0;
     font-size: 20px;
     font-weight: bold;

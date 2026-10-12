@@ -43,7 +43,7 @@ export default {
     height: fit-content;
     padding: 5px 10px;
     position: relative;
-    background-color: var(--grey-100);
+    background-color: var(--grey-700);
     font-size: 16px;
     border-radius: 2.5px;
 }
@@ -71,6 +71,6 @@ export default {
 }
 
 .option:hover {
-    background-color: var(--grey-200);
+    background-color: var(--grey-650);
 }
 </style>

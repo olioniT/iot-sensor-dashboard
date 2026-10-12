@@ -27,5 +27,14 @@ button, input, textarea {
 
 /* button { cursor: pointer; } */
 
-input, textarea { outline: 0px var(--white) solid; }
-input:focus, textarea:focus { outline: 6px var(--blue-300) solid; }
+input, textarea {
+    background-color: var(--grey-700);
+    outline: 0px var(--grey-750) solid;
+    transition: 0.2s;
+    font-size: 14px;
+    padding: 5px 10px;
+}
+
+input:focus, textarea:focus {
+    outline: 3px var(--blue-300) solid;
+}
