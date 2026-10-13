@@ -3,12 +3,12 @@
         <div id="left">
             <div id="filters">
                 <input type="text" id="search" placeholder="Search by name">
-                <DropDown placeholder="Select a Location..." :options="this.locations" />
+                <DropDown placeholder="All" @filterByLocation="(location) => filterByLocation(location)" :options="this.locations" />
             </div>
             <div id="list">
-                <div v-for="sensor in sensors" :class="sensor.id === Number(this.id) ? 'card active' : 'card'" @click="() => {this.$router.push(`/history/sensor/${sensor.id}`)}">
-                    <p class="name">{{ sensor.name }}</p>
-                    <p class="location">{{ sensor.location }}</p>
+                <div v-for="sensor in tempSensors" :class="sensor.id === Number(this.id) ? 'card active' : 'card'" @click="() => {this.$router.push(`/history/sensor/${sensor.id}`)}">
+                    <p class="title">{{ sensor.name }}</p>
+                    <p class="subtitle">{{ sensor.location }}</p>
                 </div>
             </div>
         </div>
@@ -37,6 +37,9 @@ export default {
     data() {
         return {
             sensorStore: useSensorStore(),
+            
+            tempSensors: [],
+
             lineOptions: {
                 responsive: true,
                 maintainAspectRatio: false,
@@ -60,6 +63,17 @@ export default {
             },
         }
     },
+    methods: {
+        filterByLocation(location) {
+            console.log(location)
+
+            if (location !== "All") {
+                this.tempSensors = this.sensors.filter(s => s.location === location)
+            } else {
+                this.tempSensors = this.sensors
+            }
+        }
+    },
     computed: {
         sensorID() {
             return Number(this.id) || 0
@@ -71,7 +85,7 @@ export default {
             return this.sensorStore.getReadingsBySensorID(this.sensorID)   
         },
         locations() {
-            return this.sensorStore.allLocationNames;
+            return ["All", ...this.sensorStore.allLocationNames];
         },
         lineData() {
             const cutoffDate = Date.now() - 4 * 60 * 60 * 1000
@@ -101,6 +115,9 @@ export default {
                 return []
             }
         },
+    },
+    mounted() {
+        this.tempSensors = this.sensors
     }
 }
 </script>
@@ -115,66 +132,64 @@ export default {
     gap: 15px;
 }
 
-#left {
-    width: 100%;
+#left, #right {
+    width: calc(100% - 20px);
     height: 100%;
-    display: grid;
-    grid-template-rows: 1.4fr 9fr;
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
     border-radius: 5px;
-    border: 2.5px solid var(--grey-750);
+    padding: 0px 10px;
+    background-color: var(--grey-750);
+}
+
+#right {
+    width: calc(100% - 40px);
+    height: calc(100% - 40px);
+    padding: 20px;
 }
 
 #filters {
-    width: calc(100% - 30px);
-    height: calc(100% - 30px);
+    width: 100%;
+    height: 60px;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     gap: 10px;
-    border-top-left-radius: 2.5px;
-    border-top-right-radius: 2.5px;
-    background-color: var(--grey-750);
-    padding: 15px;
+    padding: 15px 0px;
 }
 
-#search {
-    width: calc(100% - 10px);
-    height: 35px;
-    border-radius: 2.5px;
-    font-size: 14px;
-    padding: 0px 10px;
-    background-color: var(--grey-700);
+#search { width: calc(100% - 20px); }
+
+#list {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .card {
-    padding: 10px;
+    width: calc(100% - 20px);
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 2.5px;
+    padding: 0px 10px;
     cursor: pointer;
 }
 
-.active { background-color: var(--grey-700); }
+.card:hover { background-color: var(--grey-800); }
+.card.active { background-color: var(--grey-700); }
 
-.name { font-size: 16px; }
-
-.location {
-    font-size: 12px;
-    font-style: italic;
-    color: var(--grey-400);
+.card > .title {
+    font-size: 18px;
 }
 
-#right {
-    box-sizing: border-box;
-    width: 100%;
-    height: calc(100% - 60px);
-    min-width: 0;
-    min-height: 100%;
-    padding: 30px;
-    border-radius: 5px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    border: 2.5px solid var(--grey-750);
+.card > .subtitle {
+    font-size: 14px;
+    color: var(--grey-400)
 }
 
 .chart-container {

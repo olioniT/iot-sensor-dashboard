@@ -1,17 +1,24 @@
 <template>
-    <!-- <div id="row" @click="() => showHistoryOfSensor(sensor.id)"> -->
-    <div class="row">
-        <p v-for="col in rowConfig.keys" :class="col">{{ data[col] }}</p>
+    <div class="row" @click="() => showHistoryOfSensor(sensor.id)">
+        <p>{{ sensor.id }}</p>
+        <div class="info">
+            <p>{{ sensor.name }}</p>
+            <p>{{ sensor.location }}</p>
+        </div>
+        <p :class="sensor.status === 'active' ? 'status active' : 'status inactive'">{{ sensor.status.toUpperCase() }}</p>
     </div>
 </template>
 
 <script>
 export default {
     name: "TableRow",
-    props: ["data", "rowConfig"],
+    props: ["sensor"],
     components: {},
     data() {
         return {}
+    },
+    mounted() {
+        console.log(this.rowConfig)
     },
     methods: {
         showHistoryOfSensor(id) {
@@ -30,11 +37,13 @@ export default {
 
 <style scoped>
 .row {
-    width: calc(100% - 30px);
-    height: 40px;
-    display: flex;
-    justify-content: space-between;
+    width: 100%;
+    box-sizing: border-box;
+    height: 50px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
     align-items: center;
+    text-align: left;
     font-size: 18px;
     background-color: inherit;
     border-bottom: 2px solid var(--grey-650);
@@ -42,11 +51,19 @@ export default {
     cursor: pointer;
 }
 
-.row:hover { background-color: var(--grey-750); }
+.row:hover { background-color: var(--grey-850); }
+
+.row > p { margin: 0; }
+.row > p:first-child { text-align: left; }
+
+.info > p:first-child { font-size: 18px; }
+.info > p:last-child { font-size: 14px; color: var(--grey-400) }
 
 .status {
+    min-width: 50px;
     width: fit-content;
-    font-size: 14px;
+    justify-self: center;
+    font-size: 12px;
     padding: 5px 15px;
     border-radius: 15px;
 }

@@ -39,7 +39,7 @@ export default {
     },
     computed: {
         user() {
-            return useUserStore().getUser
+            return useUserStore().getCurrentUser
         }
     },
     methods: {

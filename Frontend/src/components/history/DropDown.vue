@@ -32,6 +32,8 @@ export default {
         selectOption(option) {
             this.value = option
             this.showOptions = false
+
+            this.$emit("filterByLocation", option)
         }
     }
 }
@@ -39,7 +41,7 @@ export default {
 
 <style scoped>
 #dropdown {
-    width: calc(100% - 10px);
+    width: calc(100% - 20px);
     height: fit-content;
     padding: 5px 10px;
     position: relative;

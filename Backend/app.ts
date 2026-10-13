@@ -33,6 +33,7 @@ app.post('/api/auth/login', async (req, res) => {
     res.status(200).json({ok: true, user: existingUser})
 })
 
+
 app.get('/api/sensors', async (req, res) => {
     let sensors = await prisma.sensor.findMany();
 
@@ -53,6 +54,19 @@ app.get('/api/sensors/all/readings', async (req, res) => {
     let readings = await prisma.sensorReadings.findMany()
 
     res.status(200).json(readings)
+})
+
+
+app.get('/api/users', async (req, res) => {
+    let users = await prisma.user.findMany()
+
+    res.status(200).json(users)
+})
+
+app.get("/api/roles", async (req, res) => {
+    let roles = await prisma.role.findMany()
+
+    res.status(200).json(roles)
 })
 
 wss.on("connection", (socket) => {

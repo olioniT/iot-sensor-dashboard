@@ -1,3 +1,10 @@
-.primary {
-    background-color: var(--blue-600);
-}
+.primary { background-color: var(--blue-600); }
+.primary:hover { background-color: var(--blue-550); }
+
+.secondary { background-color: var(--grey-700); }
+.secondary:hover { background-color: var(--grey-650); }
+
+.danger { background-color: var(--red-500); }
+.danger:hover { background-color: var(--red-450); }
+
+.danger.disabled { background-color: var(--red-700); opacity: 0.75; cursor:not-allowed; }

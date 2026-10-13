@@ -15,7 +15,8 @@ model Sensor {
   min_temperature Decimal
   max_temperature Decimal
   update_interval Int
-  created_at String
+  last_edited DateTime @default(now())
+  created_at DateTime @default(now())
   created_by Int
   color String @default("#000000")
 } 
@@ -32,7 +33,9 @@ model User {
   name String?
   username String @unique
   password String
-  role Int 
+  role Int
+  join_date DateTime @default(now())
+  last_edited DateTime @default(now())
 }
 
 model Role {
