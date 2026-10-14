@@ -1,7 +1,9 @@
 <template>
     <div id="dropdown">
         <div id="select" @click="toggleOptions">
-            <p>{{ this.value || placeholder }}</p>
+            <p v-if="this.value !== undefined">{{ this.value }}</p>
+            <p v-else-if="this.selected !== ''">{{ this.selected }}</p>
+            <p v-else id="placeholder">{{ placeholder }}</p>
             <Icon :icon="this.showOptions ? 'chevron-up' : 'chevron-down'"/>
         </div>
         <div id="options" v-if="showOptions">
@@ -13,16 +15,16 @@
 </template>
 
 <script>
-import Icon from '../Icon.vue';
+import Icon from '@/components/Icon.vue';
 
 export default {
     name: "DropDown",
     components: {Icon},
-    props: ["placeholder", "options"],
+    props: ["value", "placeholder", "options"],
     data() {
         return {
             showOptions: false,
-            value: ""
+            selected: ""
         }
     },
     methods: {
@@ -30,10 +32,10 @@ export default {
             this.showOptions = !this.showOptions
         },
         selectOption(option) {
-            this.value = option
-            this.showOptions = false
+            this.selected = option
 
-            this.$emit("filterByLocation", option)
+            this.showOptions = false
+            this.$emit("userPicked", option)
         }
     }
 }
@@ -42,11 +44,11 @@ export default {
 <style scoped>
 #dropdown {
     width: calc(100% - 20px);
-    height: fit-content;
-    padding: 5px 10px;
+    /* height: fit-content; */
+    padding: 10px;
     position: relative;
     background-color: var(--grey-700);
-    font-size: 16px;
+    font-size: 16px;    
     border-radius: 2.5px;
 }
 
@@ -57,6 +59,8 @@ export default {
     justify-content: space-between;
     align-items: center;
 }
+
+#placeholder { color: var(--grey-450) }
 
 #options {
     width: 100%;

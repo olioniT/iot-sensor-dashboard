@@ -5,6 +5,7 @@ import { prisma } from "./prisma/prisma"
 import { createServer } from "http";
 import { WebSocketServer } from "ws"
 
+import { createSensor } from "./util";
 import { startSensorSimulation } from "./util";
 
 const PORT = process.env.PORT || 3000;
@@ -56,6 +57,34 @@ app.get('/api/sensors/all/readings', async (req, res) => {
     res.status(200).json(readings)
 })
 
+app.post('/api/sensor/create', async (req, res) => {
+    let { name, location, status, minTemp, maxTemp, createdBy } = req.body
+    
+    try {
+        let updateInterval = 5000
+        createSensor(name, location, status, minTemp, maxTemp, updateInterval, createdBy)
+    } catch (error) {
+        return res.status(401).json({error: "Unable to create new sensor. Please try again."})
+    }
+
+    res.status(200).json({ ok: true })
+})
+
+app.post('/api/sensor/:id/delete', async (req, res) => {
+    let { id } = req.body
+    
+    let existingSensor = await prisma.sensor.findFirst({
+        where: { id: id }
+    })
+    
+    if (!existingSensor) { res.status(401).json({ error: "Invalid sensor ID. Please try again." }) }
+
+    await prisma.sensor.delete({
+        where: { id: id },
+    });
+
+    res.status(200).json({ ok: true })
+})
 
 app.get('/api/users', async (req, res) => {
     let users = await prisma.user.findMany()

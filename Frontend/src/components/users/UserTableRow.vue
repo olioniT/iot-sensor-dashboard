@@ -1,5 +1,6 @@
 <template>
     <div class="row">
+        <!-- <p>{{ user.name }}</p> -->
         <p>{{ user.id }}</p>
         <p>{{ user.username }}</p>
         <p>{{ user.name }}</p>

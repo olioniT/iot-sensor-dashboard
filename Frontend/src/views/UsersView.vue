@@ -7,11 +7,10 @@
             </div>
             <div id="info">
                 <div class="group">
-                    <input ref="name" type="text">
-                    <!-- <input ref="role" type="text" disabled> -->
-                    <DropDown />
+                    <input ref="name" type="text" placeholder="John Smith">
+                    <DropDown :value="role.name" placeholder="Role"/>
                 </div>
-                <input ref="username" type="text">
+                <input ref="username" type="text" placeholder="00000000">
                 <div class="group">
                     <button class="danger disabled">Delete</button>
                     <button class="primary">Save</button>
@@ -24,15 +23,22 @@
 <script>
 import UserTable from '@/components/users/UserTable.vue';
 import Icon from '@/components/Icon.vue';
-import DropDown from '@/components/history/DropDown.vue';
+import DropDown from '@/components/DropDown.vue';
 
 export default {
     name: "UsersView",
     components: {UserTable, Icon, DropDown},
+    data() {
+        return {
+            role: ""
+        }
+    },
     methods: {
         viewProfile(user, role) {
             this.$refs.name.value = user.name
-            this.$refs.role.value = role.name
+
+            this.role = role
+
             this.$refs.username.value = user.username
         }
     }
@@ -81,11 +87,11 @@ export default {
 #info input {
     width: calc(100% - 20px);
     padding: 10px;
+    font-size: 16px;
 }
 
 .group {
     width: 100%;
-    height: fit-content;
     display: flex;
     justify-content: center;
     align-items: center;

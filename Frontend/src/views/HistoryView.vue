@@ -3,7 +3,7 @@
         <div id="left">
             <div id="filters">
                 <input type="text" id="search" placeholder="Search by name">
-                <DropDown placeholder="All" @filterByLocation="(location) => filterByLocation(location)" :options="this.locations" />
+                <DropDown placeholder="All" @userPicked="(location) => filterByLocation(location)" :options="this.locations" />
             </div>
             <div id="list">
                 <div v-for="sensor in tempSensors" :class="sensor.id === Number(this.id) ? 'card active' : 'card'" @click="() => {this.$router.push(`/history/sensor/${sensor.id}`)}">
@@ -23,7 +23,7 @@
 <script>
 import { useSensorStore } from '../stores/sensors.js';
 
-import DropDown from "../components/history/DropDown.vue"
+import DropDown from "@/components/DropDown.vue"
 import { Line } from 'vue-chartjs';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, TimeScale, LineController, LineElement, PointElement } from "chart.js"
 import { parseTimestamp } from '@/util.js';
@@ -150,7 +150,7 @@ export default {
 
 #filters {
     width: 100%;
-    height: 60px;
+    height: 65px;
     display: flex;
     justify-content: center;
     align-items: center;

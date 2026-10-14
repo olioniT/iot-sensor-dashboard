@@ -1,8 +1,8 @@
 .primary { background-color: var(--blue-600); }
 .primary:hover { background-color: var(--blue-550); }
 
-.secondary { background-color: var(--grey-700); }
-.secondary:hover { background-color: var(--grey-650); }
+.secondary { background-color: var(--grey-400); }
+.secondary:hover { background-color: var(--grey-450); }
 
 .danger { background-color: var(--red-500); }
 .danger:hover { background-color: var(--red-450); }

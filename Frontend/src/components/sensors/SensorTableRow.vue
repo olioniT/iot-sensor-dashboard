@@ -1,28 +1,35 @@
 <template>
     <div class="row" @click="() => showHistoryOfSensor(sensor.id)">
-        <p>{{ sensor.id }}</p>
         <div class="info">
             <p>{{ sensor.name }}</p>
             <p>{{ sensor.location }}</p>
         </div>
+        <p>{{ reading }}</p>
         <p :class="sensor.status === 'active' ? 'status active' : 'status inactive'">{{ sensor.status.toUpperCase() }}</p>
+        <p>Last edited {{ this.formatLastEdited(sensor.last_edited) }}</p>
     </div>
 </template>
 
 <script>
+import { useSensorStore } from '@/stores/sensors';
+import { useConfigStore } from '@/stores/config';
+
 export default {
     name: "TableRow",
     props: ["sensor"],
     components: {},
     data() {
-        return {}
-    },
-    mounted() {
-        console.log(this.rowConfig)
+        return {
+            sensorStore: useSensorStore(),
+            configStore: useConfigStore()
+        }
     },
     methods: {
         showHistoryOfSensor(id) {
             this.$router.push(`/history/sensor/${id}`)
+        },
+        formatLastEdited(date) {
+            return `${date.split("T")[0].split("-").join("/")} ${date.split("T")[1].slice(0, 5)}`
         }
     },
     computed: {
@@ -41,7 +48,7 @@ export default {
     box-sizing: border-box;
     height: 50px;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: 1fr 1fr auto 2fr;
     align-items: center;
     text-align: left;
     font-size: 18px;
@@ -51,10 +58,12 @@ export default {
     cursor: pointer;
 }
 
-.row:hover { background-color: var(--grey-850); }
+/* .row:hover { background-color: var(--grey-850); } */
 
 .row > p { margin: 0; }
 .row > p:first-child { text-align: left; }
+.row > p:nth-child(2) { width:100%; text-align: center; }
+.row > p:last-child { text-align: right; color: var(--grey-450) }
 
 .info > p:first-child { font-size: 18px; }
 .info > p:last-child { font-size: 14px; color: var(--grey-400) }

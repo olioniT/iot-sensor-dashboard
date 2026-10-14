@@ -19,7 +19,10 @@ import {
     TriangleAlert,
     CircleCheck,
     X,
-    LogOut
+    LogOut,
+    Trash,
+    SquarePen,
+    Eye
 } from "@lucide/vue";
 
 export default {
@@ -43,7 +46,10 @@ export default {
                 "info": Info,
                 "warning": TriangleAlert,
                 "success": CircleCheck,
-                "x": X
+                "x": X,
+                "delete": Trash,
+                "edit": SquarePen,
+                "view": Eye
             }
         }
     },

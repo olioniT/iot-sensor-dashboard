@@ -1,3 +1,4 @@
+import bcrypt from "bcrypt"
 import { WebSocketServer } from "ws"
 import { prisma } from "./prisma/prisma";
 
@@ -7,7 +8,96 @@ interface SensorReading {
     recorded_at: string;
 }
 
-async function broadcast(wss: WebSocketServer, data: any) {
+export async function createRole(
+    name: string,
+    description: string
+) {
+    await prisma.role.create({
+        data: {
+            name: name,
+            description: description
+        }
+    })
+}
+
+export async function createUser( 
+    name: string, 
+    username: string, 
+    password: string, 
+    role: number
+) {
+    const hashedPassword = await bcrypt.hash(password, 10)
+
+    await prisma.user.create({
+        data: {
+            name: name,
+            username: username,
+            password: hashedPassword,
+            role: role,
+        },
+    });
+}
+
+export async function createSensor(
+    name: string,
+    location: string,
+    status: string,
+    minTemp: number,
+    maxTemp: number,
+    updateInterval: number,
+    createdBy: number
+) {
+    const chartColors = [ "#2563eb", "#f97316", "#10b981", "#e11d48", "#8b5cf6", "#eab308", "#06b6d4", "#ec4899", "#64748b", "#84cc16"];
+
+    const timestamp = new Date().toISOString()
+
+    // const date = timestamp.split("T")[0]
+    // const time = `${Number(timestamp.split("T")[1].split(".")[0].slice(0, 2)) + 12}:${timestamp.split("T")[1].split(".")[0].slice(3, 5)}`
+    // const datetime = `${date} ${time}`
+    
+    const color = chartColors[Math.floor(Math.random() * chartColors.length)]
+
+    await prisma.sensor.create({
+        data: {
+            name: name,
+            location: location,
+            status: status,
+            min_temperature: minTemp,
+            max_temperature: maxTemp,
+            update_interval: updateInterval,
+            last_edited: timestamp,
+            created_at: timestamp,
+            created_by: createdBy,
+            color: color
+        }
+    })
+}
+
+export async function generateHistoricalReadings(sensorIDs: number[], intervalMinutes = 10) {
+    const now = Date.now()
+    const windowMs = 24 * 60 * 60 * 1000
+    const stepMs = intervalMinutes * 60 * 1000
+
+    const data: { sensor_id: number; reading: number; recorded_at: Date }[] = []
+
+    for (const sensor_id of sensorIDs) {
+        let temperature = 20 + Math.random() * 10
+
+        for (let t = now - windowMs; t <= now; t += stepMs) {
+            temperature = Math.min(30, Math.max(20, temperature + (Math.random() - 0.5) * 2))
+
+            data.push({
+                sensor_id,
+                reading: Math.round(temperature * 10) / 10,
+                recorded_at: new Date(t)
+            })
+        }
+    }
+
+    await prisma.sensorReadings.createMany({ data })
+}
+
+export async function broadcast(wss: WebSocketServer, data: any) {
     if (!wss) return;
 
     console.log(data)

@@ -2,6 +2,8 @@
     <div id="table">
         <div id="header">
             <input type="text" id="search" placeholder="Search for a name or ID">
+            <div id="cols">
+            </div>
         </div>
         <div id="body">
             <SensorTableRow v-if="sensors.length > 0" v-for="sensor in sensors" :sensor="sensor" />
