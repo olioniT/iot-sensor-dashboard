@@ -75,6 +75,18 @@ export const useSensorStore = defineStore("sensors", {
                 }
             })
             return locationArr
+        },
+        getAllStatuses() {
+            let statuses = []
+
+            this.sensors.forEach((sensor) => {
+                let formattedStatus = `${sensor.status[0].toUpperCase()}${sensor.status.slice(1, sensor.status.length)}`
+                if (!statuses.includes(formattedStatus)) {
+                    statuses.push(formattedStatus)
+                }
+            })
+
+            return statuses
         }
     },
     actions: {

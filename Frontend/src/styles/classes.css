@@ -1,3 +1,4 @@
+/* BUTTONS */
 .primary { background-color: var(--blue-600); }
 .primary:hover { background-color: var(--blue-550); }
 
@@ -8,3 +9,7 @@
 .danger:hover { background-color: var(--red-450); }
 
 .danger.disabled { background-color: var(--red-700); opacity: 0.75; cursor:not-allowed; }
+
+
+.row { display: flex; gap: 10px; }
+.col { display: flex; flex-direction: column; gap: 10px; }

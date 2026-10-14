@@ -6,29 +6,25 @@
             </div>
         </div>
         <div id="body">
-            <SensorTableRow v-if="sensors.length > 0" v-for="sensor in sensors" :sensor="sensor" />
+            <SensorTableRow v-if="sensors.length > 0" v-for="sensor in sensors" :sensor="sensor" @showDataOfSensor="showDataOfSensor"/>
             <p id="no-sensors" v-else>No sensors found. Please contact your administrator to create one.</p>
         </div>
     </div>
 </template>
 
 <script>
-import { useSensorStore } from '@/stores/sensors.js';
-
 import SensorTableRow from './SensorTableRow.vue';
 
 export default {
     name: "Table",
-    props: [],
+    props: ["sensors"],
     components: {SensorTableRow},
     data() {
-        return {
-            sensorStore: useSensorStore()
-        }
+        return { }
     },
-    computed: {
-        sensors() {
-            return this.sensorStore.getAllSensors
+    methods: {
+        showDataOfSensor(id) {
+            this.$emit("showDataOfSensor", id)
         }
     }
 }

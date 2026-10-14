@@ -26,7 +26,7 @@ button, input, textarea {
     padding: 10px;
 }
 
-button { cursor: pointer; }
+button { display: flex; justify-content: center; align-items: center; gap: 10px; cursor: pointer; }
 
 input, textarea {
     background-color: var(--grey-700);
