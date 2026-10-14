@@ -1,0 +1,47 @@
+{
+  "name": "frontend",
+  "productName": "frontend",
+  "version": "1.0.0",
+  "description": "My Electron application description",
+  "main": ".vite/build/main.js",
+  "private": true,
+  "scripts": {
+    "start": "electron-forge start",
+    "no-sandbox": "electron-forge start --no-sandbox",
+    "package": "electron-forge package",
+    "make": "electron-forge make",
+    "publish": "electron-forge publish",
+    "lint": "echo \"No linting configured\""
+  },
+  "keywords": [],
+  "author": "22358326",
+  "license": "MIT",
+  "devDependencies": {
+    "@electron-forge/cli": "^7.11.2",
+    "@electron-forge/maker-deb": "^7.11.2",
+    "@electron-forge/maker-rpm": "^7.11.2",
+    "@electron-forge/maker-squirrel": "^7.11.2",
+    "@electron-forge/maker-zip": "^7.11.2",
+    "@electron-forge/plugin-auto-unpack-natives": "^7.11.2",
+    "@electron-forge/plugin-fuses": "^7.11.2",
+    "@electron-forge/plugin-vite": "^7.11.2",
+    "@electron/fuses": "^1.8.0",
+    "@tailwindcss/vite": "^4.3.3",
+    "@vitejs/plugin-vue": "^6.0.8",
+    "electron": "44.1.1",
+    "tailwindcss": "^4.3.3",
+    "vite": "^5.4.21"
+  },
+  "dependencies": {
+    "@lucide/vue": "^1.39.0",
+    "chart.js": "^4.5.1",
+    "chartjs-adapter-date-fns": "^3.0.0",
+    "date-fns": "^4.4.0",
+    "electron-squirrel-startup": "^1.0.1",
+    "pinia": "^4.0.3",
+    "vue": "^3.5.42",
+    "vue-chart-3": "^4.0.1",
+    "vue-chartjs": "^5.3.4",
+    "vue-router": "^4.6.4"
+  }
+}

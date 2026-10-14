@@ -1,0 +1,41 @@
+@import "./styles/colors.css";
+@import "./styles/classes.css";
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --menu-width: 225px;
+    --view-width: calc(100vw - var(--menu-width));
+}
+
+p, h1, h2, h3, h4, h5, h6, input, textarea, label, button {
+    color: var(--white);
+    font-family: "Inter", sans-serif;
+}
+
+button, input, textarea {
+    outline: none;
+    border: none;
+    border-radius: 2.5px;
+    font-size: 16px;
+    padding: 10px;
+}
+
+button { cursor: pointer; }
+
+input, textarea {
+    background-color: var(--grey-700);
+    outline: 0px var(--grey-750) solid;
+    transition: 0.2s;
+    font-size: 14px;
+    padding: 5px 10px;
+}
+
+input:focus, textarea:focus {
+    outline: 3px var(--blue-300) solid;
+}
