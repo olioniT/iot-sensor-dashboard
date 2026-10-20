@@ -4,6 +4,7 @@ import { defineStore } from "pinia";
 export const useSensorStore = defineStore("sensors", {
     state: () => ({
         sensors: [],
+        statuses: ["Inactive", "Active"],
         historicalReadings: [],
         activeReadings: []
     }),
@@ -77,16 +78,7 @@ export const useSensorStore = defineStore("sensors", {
             return locationArr
         },
         getAllStatuses() {
-            let statuses = []
-
-            this.sensors.forEach((sensor) => {
-                let formattedStatus = `${sensor.status[0].toUpperCase()}${sensor.status.slice(1, sensor.status.length)}`
-                if (!statuses.includes(formattedStatus)) {
-                    statuses.push(formattedStatus)
-                }
-            })
-
-            return statuses
+            return this.statuses
         }
     },
     actions: {
@@ -169,13 +161,32 @@ export const useSensorStore = defineStore("sensors", {
                 })
             }
 
-            return temps.reduce((sum, current) => sum + current, 0) / temps.length
+            if (temps.length > 0) {
+                return temps.reduce((sum, current) => sum + current, 0) / temps.length
+            } else {
+                return 0
+            }
         },
         getSensorByID(id) {
             return this.sensors.find(s => s.id === Number(id))
         },
         getReadingsBySensorID(id) {
             return this.historicalReadings.filter((r) => r.sensor_id === id)
+        },
+        updateSensor(updatedSensor) {
+            let sensor = this.sensors.find(sensor => sensor.id === updatedSensor.id)
+            
+            if (sensor) {
+                Object.assign(sensor, updatedSensor)
+            } else {
+                this.sensors.push(updatedSensor)
+            }
+        },
+        removeSensor(id) {
+            let sensor = this.sensors.find(sensor => sensor.id === id)
+            let index = this.sensors.indexOf(sensor)
+
+            this.sensors.splice(index, 1)
         }
     }
 })

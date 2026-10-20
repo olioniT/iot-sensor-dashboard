@@ -22,7 +22,8 @@ import {
     LogOut,
     Trash,
     SquarePen,
-    Eye
+    Eye,
+    Plus
 } from "@lucide/vue";
 
 export default {
@@ -49,7 +50,8 @@ export default {
                 "x": X,
                 "delete": Trash,
                 "edit": SquarePen,
-                "view": Eye
+                "view": Eye,
+                "plus": Plus
             }
         }
     },

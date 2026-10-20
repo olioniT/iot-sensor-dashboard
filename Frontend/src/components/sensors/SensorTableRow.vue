@@ -12,7 +12,7 @@
                 <Icon icon="view" color="var(--grey-200)" size="18px"/>
                 <p>View</p>
             </button>
-            <button class="primary" @click="() => showDataOfSensor(sensor.id)">
+            <button class="primary" @click="() => showDataOfSensor(sensor.id)" v-if="this.userStore.isUserAdmin()">
                 <Icon icon="edit" color="var(--blue-200)" size="18px"/>
                 <p>Edit</p>
             </button>
@@ -23,6 +23,7 @@
 <script>
 import { useSensorStore } from '@/stores/sensors';
 import { useConfigStore } from '@/stores/config';
+import { useUserStore } from '@/stores/user.js';
 
 import Icon from '../Icon.vue';
 
@@ -33,7 +34,8 @@ export default {
     data() {
         return {
             sensorStore: useSensorStore(),
-            configStore: useConfigStore()
+            configStore: useConfigStore(),
+            userStore: useUserStore()
         }
     },
     methods: {

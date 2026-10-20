@@ -1,5 +1,7 @@
 <template id="app">
     <Toaster/>
+    <SensorDialog v-if="this.dialogs.state.sensorDialog" />
+    <UserDialog v-if="this.dialogs.state.userDialog"/>
     <component :is="currentLayout">
         <RouterView />
     </component>
@@ -10,13 +12,19 @@ import Icon from './components/Icon.vue';
 
 import Toaster from '@/components/Toaster.vue';
 
-import { useWebSocket } from './composables/useWebSocket.js';
+import { useWebSocket } from '@/composables/useWebSocket.js';
+import { useDialogs } from '@/composables/useDialogs.js';
+
+import SensorDialog from "@/components/sensors/SensorDialog.vue"
+import UserDialog from '@/components/users/UserDialog.vue';
 
 export default {
     name: "App",
-    components: {Toaster, Icon},
+    components: {Toaster, Icon, SensorDialog, UserDialog},
     data() {
-        return {}
+        return {
+            dialogs: useDialogs()
+        }
     },
     computed: {
         currentLayout() {

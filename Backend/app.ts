@@ -70,12 +70,42 @@ app.post('/api/sensor/create', async (req, res) => {
     res.status(200).json({ ok: true })
 })
 
+app.post('/api/sensor/:id/edit', async (req, res) => {
+    let { id, name, status, color, location, minTemp, maxTemp, updateInterval } = req.body
+    
+    let existingSensor = await prisma.sensor.findFirst({
+        where: {
+            id: id,
+        }
+    });
+
+    if (!existingSensor) { res.status(401).json({ error: "Invalid sensor ID. Please try again." }) }
+
+    const sensor = await prisma.sensor.update({
+        where: { id: id },
+            data: {
+                name: name,
+                location: location,
+                status: status,
+                color: color,
+                min_temperature: minTemp,
+                max_temperature: maxTemp,
+                update_interval: updateInterval,
+            },
+    });
+    res.status(200).json({ ok: true, sensor })
+})
+
 app.post('/api/sensor/:id/delete', async (req, res) => {
     let { id } = req.body
     
     let existingSensor = await prisma.sensor.findFirst({
-        where: { id: id }
-    })
+        where: {
+            id: id,
+        }
+    });
+
+    console.log(id, existingSensor)
     
     if (!existingSensor) { res.status(401).json({ error: "Invalid sensor ID. Please try again." }) }
 

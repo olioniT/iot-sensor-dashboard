@@ -1,13 +1,12 @@
 <template>
     <div id="dropdown">
         <div id="select" @click="toggleOptions">
-            <p v-if="this.value !== undefined">{{ this.value }}</p>
-            <p v-else-if="this.selected !== ''">{{ this.selected }}</p>
+            <p v-if="hasDisplayValue">{{ displayValue }}</p>
             <p v-else id="placeholder">{{ placeholder }}</p>
-            <Icon :icon="this.showOptions ? 'chevron-up' : 'chevron-down'"/>
+            <Icon :icon="showOptions ? 'chevron-up' : 'chevron-down'" color="var(--grey-450)"/>
         </div>
         <div id="options" v-if="showOptions">
-            <p class="option" v-for="option in options" @click="(e) => selectOption(option)">
+            <p class="option" v-for="option in options" :key="option" @click="selectOption(option)">
                 {{ option }}
             </p>
         </div>
@@ -17,6 +16,8 @@
 <script>
 import Icon from '@/components/Icon.vue';
 
+const isValid = (v) => v !== undefined && v !== null && v !== "";
+
 export default {
     name: "DropDown",
     components: {Icon},
@@ -25,6 +26,16 @@ export default {
         return {
             showOptions: false,
             selected: ""
+        }
+    },
+    computed: {
+        displayValue() {
+            if (isValid(this.selected)) return this.selected;
+            if (isValid(this.value)) return this.value;
+            return null;
+        },
+        hasDisplayValue() {
+            return isValid(this.displayValue)
         }
     },
     methods: {
@@ -44,12 +55,12 @@ export default {
 <style scoped>
 #dropdown {
     width: calc(100% - 20px);
-    /* height: fit-content; */
     padding: 10px;
     position: relative;
     background-color: var(--grey-700);
     font-size: 16px;    
     border-radius: 2.5px;
+    cursor: pointer;
 }
 
 #select {
@@ -60,7 +71,7 @@ export default {
     align-items: center;
 }
 
-#placeholder { color: var(--grey-450) }
+#placeholder { color: var(--grey-450); }
 
 #options {
     width: 100%;
@@ -73,7 +84,7 @@ export default {
 }
 
 .option {
-    padding: 5px 10px;
+    padding: 10px;
 }
 
 .option:hover {
