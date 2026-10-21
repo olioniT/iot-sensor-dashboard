@@ -26,7 +26,7 @@ export function useWebSocket() {
 
         socket.value.onerror = (error) => {
             console.error("WebSocket error:", error)
-            useToast().show(error, "error")
+            useToast().show("Error connecting to WebSocket.", "error")
         }
 
         socket.value.onclose = () => {

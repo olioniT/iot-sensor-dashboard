@@ -20,20 +20,23 @@ app.use(cors())
 app.use(express.json())
 
 app.post('/api/auth/login', async (req, res) => {
-    const { user, pass } = req.body
-
-    const existingUser = await prisma.user.findFirst({
-        where: { username: user }
-    })
-
-    const doPassWordsMatch = existingUser ? await bcrypt.compare(pass, existingUser.password) : false
-    if (!existingUser || !doPassWordsMatch) {
-        return res.status(401).json({error: "Invalid username or password."})
+    try {
+        const { user, pass } = req.body
+    
+        const existingUser = await prisma.user.findFirst({
+            where: { username: user }
+        })
+    
+        const doPassWordsMatch = existingUser ? await bcrypt.compare(pass, existingUser.password) : false
+        if (!existingUser || !doPassWordsMatch) {
+            return res.status(401).json({error: "Invalid username or password."})
+        }
+    
+        res.status(200).json({ok: true, user: existingUser})
+    } catch (err) {
+        res.status(500).json({error: err})
     }
-
-    res.status(200).json({ok: true, user: existingUser})
 })
-
 
 app.get('/api/sensors', async (req, res) => {
     let sensors = await prisma.sensor.findMany();
@@ -58,16 +61,23 @@ app.get('/api/sensors/all/readings', async (req, res) => {
 })
 
 app.post('/api/sensor/create', async (req, res) => {
-    let { name, location, status, minTemp, maxTemp, createdBy } = req.body
-    
     try {
-        let updateInterval = 5000
-        createSensor(name, location, status, minTemp, maxTemp, updateInterval, createdBy)
-    } catch (error) {
-        return res.status(401).json({error: "Unable to create new sensor. Please try again."})
-    }
+        let { name, location, status, minTemp, maxTemp, updateInterval, createdBy } = req.body
+    
+        let existingSensor = await prisma.sensor.findFirst({
+            where: { name: name }
+        })
 
-    res.status(200).json({ ok: true })
+        if (existingSensor) {
+            res.status(400).json({error: "Duplicate sensor name. Please change the name of your new sensor and try again."})
+        }
+
+        let newSensor = await createSensor(name, location, status, minTemp, maxTemp, updateInterval, createdBy)
+
+        res.status(200).json({ ok: true, sensor: newSensor })
+    } catch (error) {
+        return res.status(500).json({error: "Unable to create new sensor. Please try again."})
+    }
 })
 
 app.post('/api/sensor/:id/edit', async (req, res) => {
@@ -100,9 +110,7 @@ app.post('/api/sensor/:id/delete', async (req, res) => {
     let { id } = req.body
     
     let existingSensor = await prisma.sensor.findFirst({
-        where: {
-            id: id,
-        }
+        where: { id: id }
     });
 
     console.log(id, existingSensor)

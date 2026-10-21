@@ -6,8 +6,8 @@
         </span>
         <div id="sensor" v-if="this.userStore.isUserAdmin()">
             <div id="top">
-                <div id="icon">
-                    <Icon icon="radio" color="var(--grey-600)" size="85%"/>
+                <div id="icon" :style="{backgroundColor: tinycolor(this.$refs.color?.value).darken().toString() || 'var(--grey-700)'}">
+                    <Icon icon="radio" :color="this.$refs.color?.value || 'var(--grey-650)'" size="85%"/>
                 </div>
                 <div id="info">
                     <span>
@@ -43,7 +43,7 @@
                     </span>
                 <span>
                     <p class="label">Update Interval</p>
-                    <input type="text" ref="update_interval" :value="this.sensor.update_interval">
+                    <input type="text" ref="update_interval" :value="this.sensor.update_interval" placeholder="30s">
                 </span>
             </div>
             <div id="bottom">
@@ -68,6 +68,8 @@ import SensorDialog from '@/components/sensors/SensorDialog.vue';
 
 import { useToast } from '@/composables/useToast';
 import { useDialogs } from '@/composables/useDialogs';
+
+import {tinycolor} from "tinycolor2"
 
 export default {
     name: "SensorsView",
@@ -104,6 +106,16 @@ export default {
                 return sensor.status.toUpperCase()[0] + sensor.status.slice(1, sensor.status.length)
             }
         },
+        emptyForm() {
+            this.sensor = {}
+            this.$refs.name.value = ""
+            this.sensorStatus = ""
+            this.$refs.color.value = ""
+            this.$refs.location.value = ""
+            this.$refs.min_temperature.value = ""
+            this.$refs.max_temperature.value = ""
+            this.$refs.update_interval.value = ""
+        },
         async updateSensor() {
             try {
                 let updatedSensor = {
@@ -133,6 +145,8 @@ export default {
                     this.sensorStore.updateSensor(data.sensor)
 
                     useToast().show(`Successfully updated sensor #${this.sensor.id}!`, "success")
+
+                    this.emptyForm()
                 }
             } catch (err) {
                 console.error(err)
@@ -157,6 +171,8 @@ export default {
                     this.sensorStore.removeSensor(this.sensor.id)
 
                     useToast().show(`Successfully deleted sensor #${this.sensor.id}`, "success")
+
+                    this.emptyForm()
                 }
             } catch (err) {
                 console.error(err)

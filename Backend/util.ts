@@ -1,11 +1,25 @@
 import bcrypt from "bcrypt"
 import { WebSocketServer } from "ws"
 import { prisma } from "./prisma/prisma";
+import { Decimal } from "@prisma/client/runtime/client";
 
 interface SensorReading {
     sensor_id: number;
     reading: number;
     recorded_at: string;
+}
+
+interface Sensor {
+    name: string;
+    location: string;
+    status: string;
+    min_temperature: Decimal;
+    max_temperature: Decimal;
+    update_interval: number;
+    last_edited: Date;
+    created_at: Date;
+    created_by: number;
+    color: string;
 }
 
 export async function createRole(
@@ -50,14 +64,10 @@ export async function createSensor(
     const chartColors = [ "#2563eb", "#f97316", "#10b981", "#e11d48", "#8b5cf6", "#eab308", "#06b6d4", "#ec4899", "#64748b", "#84cc16"];
 
     const timestamp = new Date().toISOString()
-
-    // const date = timestamp.split("T")[0]
-    // const time = `${Number(timestamp.split("T")[1].split(".")[0].slice(0, 2)) + 12}:${timestamp.split("T")[1].split(".")[0].slice(3, 5)}`
-    // const datetime = `${date} ${time}`
     
     const color = chartColors[Math.floor(Math.random() * chartColors.length)]
 
-    await prisma.sensor.create({
+    const sensor = await prisma.sensor.create({
         data: {
             name: name,
             location: location,
@@ -71,6 +81,8 @@ export async function createSensor(
             color: color
         }
     })
+
+    return sensor
 }
 
 export async function generateHistoricalReadings(sensorIDs: number[], intervalMinutes = 10) {
@@ -99,8 +111,6 @@ export async function generateHistoricalReadings(sensorIDs: number[], intervalMi
 
 export async function broadcast(wss: WebSocketServer, data: any) {
     if (!wss) return;
-
-    console.log(data)
 
     await prisma.sensorReadings.createMany({ data })
 
