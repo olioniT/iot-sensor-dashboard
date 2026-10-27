@@ -8,6 +8,8 @@
 .danger { background-color: var(--red-500); }
 .danger:hover { background-color: var(--red-450); }
 
+.primary.disabled { background-color: var(--blue-800); opacity: 0.75; cursor:not-allowed; }
+.secondary.disabled { background-color: var(--grey-800); opacity: 0.75; cursor:not-allowed; }
 .danger.disabled { background-color: var(--red-700); opacity: 0.75; cursor:not-allowed; }
 
 .row { display: flex; gap: 10px; }

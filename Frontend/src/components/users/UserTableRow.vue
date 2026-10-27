@@ -1,19 +1,25 @@
 <template>
     <div class="row">
-        <!-- <p>{{ user.name }}</p> -->
-        <p>{{ user.id }}</p>
-        <p>{{ user.username }}</p>
-        <p>{{ user.name }}</p>
-        <p>{{ role.name }}</p>
+        <p>{{ user?.id }}</p>
+        <p>{{ user?.username }}</p>
+        <p>{{ user?.name }}</p>
+        <p id="role" :class="role?.name.toLowerCase()">{{ role?.name }}</p>
+        <p>{{ formatJoinDate(user.join_date) }}</p>
+        <div class="actions">
+            <button class="primary" @click="() => showDataOfUser(user.id)"><Icon icon="edit" color="var(--blue-200)" size="16px" />Edit</button>
+        </div>
     </div>
 </template>
 
 <script>
 import { useUserStore } from '@/stores/user';
 
+import Icon from '@/components/Icon.vue';
+
 export default {
     name: "UserTableRow",
     props: ["user"],
+    components: {Icon},
     data() {
         return {
             userStore: useUserStore()
@@ -23,6 +29,20 @@ export default {
         role() {
             return this.userStore.getRoleOfUser(this.user.role)
         }
+    },
+    methods: {
+        formatJoinDate(timestamp) {
+            let date = timestamp.split("T")[0]
+            
+            let day = date.split("-")[2]
+            let month = date.split("-")[1]
+            let year = date.split("-")[0]
+            
+            return `${day}/${month}/${year}`
+        },
+        showDataOfUser(id) {
+            this.$emit("showDataOfUser", id)
+        }
     }
 }
 </script>
@@ -30,33 +50,36 @@ export default {
 <style scoped>
 .row {
     width: 100%;
+    height: 40px;
     box-sizing: border-box;
-    height: 50px;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    justify-content: center;
     align-items: center;
-    text-align: left;
-    font-size: 18px;
+    grid-template-columns: repeat(6, 1fr);
+    padding: 0px 15px;
     background-color: inherit;
     border-bottom: 2px solid var(--grey-650);
-    padding: 0px 15px;
-    cursor: pointer;
 }
 
-.row:hover { background-color: var(--grey-850); }
+.row:nth-last-child { align-self: flex-end; }
+.row > .actions { width: 100%; display: flex; justify-content: flex-end; }
 
-.row > p { margin: 0; }
-.row > p:first-child { text-align: left; }
-
-/* .info > p:first-child { font-size: 18px; }
-.info > p:last-child { font-size: 14px; color: var(--grey-400) } */
-
-.status {
-    min-width: 50px;
+#role {
     width: fit-content;
-    justify-self: center;
-    font-size: 12px;
-    padding: 5px 15px;
-    border-radius: 15px;
+    font-size: 14px;
+    padding: 2.5px 10px;
+    border-radius: 10px;
+}
+
+#role.admin {
+    background-color: var(--red-450);
+}
+
+#role.user {
+    background-color: var(--blue-450);
+}
+
+.actions > button {
+    width: fit-content; height: 30px; font-size: 14px;
 }
 </style>

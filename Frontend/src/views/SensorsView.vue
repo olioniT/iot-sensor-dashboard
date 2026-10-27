@@ -6,17 +6,17 @@
         </span>
         <div id="sensor" v-if="this.userStore.isUserAdmin()">
             <div id="top">
-                <div id="icon" :style="{backgroundColor: tinycolor(this.$refs.color?.value).darken().toString() || 'var(--grey-700)'}">
-                    <Icon icon="radio" :color="this.$refs.color?.value || 'var(--grey-650)'" size="85%"/>
+                <div id="icon">
+                    <Icon icon="radio" color="var(--grey-650)" size="85%"/>
                 </div>
                 <div id="info">
                     <span>
                         <p class="label">Name</p>
-                        <input type="text" ref="name" placeholder="Sensor #1" :value="this.sensor.name">
+                        <input type="text" placeholder="Sensor #1" v-model="form.name">
                     </span>
                     <span>
                         <p class="label">Location</p>
-                        <input type="text" ref="location" placeholder="Front Door" :value="this.sensor.location">
+                        <input type="text" placeholder="Front Door" v-model="form.location">
                     </span>
                 </div>
             </div>
@@ -24,32 +24,32 @@
                 <span style="display: grid; grid-template-columns: 1fr 2fr; gap: 10px;">
                     <span>
                         <p class="label">Status</p>
-                        <DropDown :key="sensor.id" @userPicked="(status) => sensorStatus = status" placeholder="Active" :value="getSensorStatus(this.sensor)" :options="this.statuses"/>
+                        <DropDown :key="form.id" @userPicked="(status) => form.status = status" placeholder="Active" :value="capitalise(form.status)" :options="this.statuses"/>
                     </span>
                     <span>
                         <p class="label">Color</p>
-                        <input type="text" ref="color" placeholder="#A8D5E2" :value="this.sensor.color">
+                        <input type="text" placeholder="#A8D5E2" v-model="form.color">
                     </span>
                 </span>
                 <span style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
                         <span>
                             <p class="label">Max</p>
-                            <input type="number" ref="max_temperature" :placeholder="configStore.formatTemp(30)" :value="this.sensor.max_temperature">
+                            <input type="number" :placeholder="configStore.formatTemp(30)" v-model="form.max_temperature">
                         </span>
                         <span>
                             <p class="label">Min</p>
-                            <input type="number" ref="min_temperature" :placeholder="configStore.formatTemp(10)" :value="this.sensor.min_temperature">
+                            <input type="number" :placeholder="configStore.formatTemp(10)" v-model="form.min_temperature">
                         </span>
                     </span>
                 <span>
                     <p class="label">Update Interval</p>
-                    <input type="text" ref="update_interval" :value="this.sensor.update_interval" placeholder="30s">
+                    <input type="number" v-model="form.update_interval" placeholder="30s">
                 </span>
             </div>
             <div id="bottom">
                 <div class="actions">
-                    <button class="danger" @click="() => deleteSensor()">Delete</button>
-                    <button class="primary" @click="() => updateSensor()">Save</button>
+                    <button :class="isFormEmpty() ? 'danger disabled' : 'danger'" :disabled="isFormEmpty()" @click="() => dialogs.showDeleteDialog('Delete sensor?', `Are you sure you want to delete ${form.name}?`, () => deleteSensor(form.id, form.name))">Delete</button>
+                    <button :class="isFormEmpty() ? 'primary disabled' : 'primary'" @click="() => updateSensor()" :disabled="isFormEmpty()">Save</button>
                 </div>
             </div>
         </div>
@@ -64,26 +64,31 @@ import { useConfigStore } from '@/stores/config';
 import SensorTable from '@/components/sensors/SensorTable.vue';
 import Icon from '@/components/Icon.vue';
 import DropDown from '@/components/DropDown.vue';
-import SensorDialog from '@/components/sensors/SensorDialog.vue';
 
 import { useToast } from '@/composables/useToast';
 import { useDialogs } from '@/composables/useDialogs';
 
-import {tinycolor} from "tinycolor2"
-
 export default {
     name: "SensorsView",
-    components: {SensorTable, Icon, DropDown, SensorDialog},
+    components: {SensorTable, Icon, DropDown},
     data() {
         return {
             sensorStore: useSensorStore(),
             userStore: useUserStore(),
             configStore: useConfigStore(),
-            
-            sensor: {},
-            sensorStatus: '',
 
-            dialogs: useDialogs()
+            dialogs: useDialogs(),
+
+            form: {
+                id: null,
+                name: "",
+                status: "",
+                color: "",
+                location: "",
+                min_temperature: "",
+                max_temperature: "",
+                update_interval: ""
+            }
         }
     },
     computed: {
@@ -95,44 +100,45 @@ export default {
         }
     },
     methods: {
-        showDataOfSensor(id) {
-            this.sensor = this.sensors.find(sensor => sensor.id === id)
-            this.sensorStatus = this.sensor.status.toLowerCase()
+        capitalise(string) {
+            return string ? string.toUpperCase()[0] + string.slice(1) : undefined
         },
-        getSensorStatus(sensor) {
-            if (!sensor.status) {
-                return
-            } else {
-                return sensor.status.toUpperCase()[0] + sensor.status.slice(1, sensor.status.length)
-            }
+        showDataOfSensor(id) {
+            let sensor = this.sensors.find(sensor => sensor.id === id)
+            if (sensor) { this.form = {...sensor} }
         },
         emptyForm() {
-            this.sensor = {}
-            this.$refs.name.value = ""
-            this.sensorStatus = ""
-            this.$refs.color.value = ""
-            this.$refs.location.value = ""
-            this.$refs.min_temperature.value = ""
-            this.$refs.max_temperature.value = ""
-            this.$refs.update_interval.value = ""
+            this.form = {
+                id: null,
+                name: "",
+                status: "",
+                color: "",
+                location: "",
+                min_temperature: "",
+                max_temperature: "",
+                update_interval: ""
+            }
+        },
+        isFormEmpty() {
+            return Object.values(this.form).some(value => value === "" || value === null || value === undefined)
         },
         async updateSensor() {
             try {
-                let updatedSensor = {
-                    id: this.sensor.id,
-                    name: this.$refs.name.value,
-                    status: this.sensorStatus.toLowerCase(),
-                    color: this.$refs.color.value,
-                    location: this.$refs.location.value,
-                    minTemp: Number(this.$refs.min_temperature.value),
-                    maxTemp: Number(this.$refs.max_temperature.value),
-                    updateInterval: Number(this.$refs.update_interval.value)
+                const payload = {
+                    id: this.form.id,
+                    name: this.form.name,
+                    status: this.form.status.toLowerCase(),
+                    color: this.form.color,
+                    location: this.form.location,
+                    minTemp: Number(this.form.min_temperature),
+                    maxTemp: Number(this.form.max_temperature),
+                    updateInterval: Number(this.form.update_interval)
                 }
 
-                const response = await fetch(`http://localhost:3000/api/sensor/${this.sensor.id}/edit`, {
+                const response = await fetch(`http://localhost:3000/api/sensor/${this.form.id}/edit`, {
                     method: "POST",
                     headers: {"Content-Type": "application/json"},
-                    body: JSON.stringify(updatedSensor)
+                    body: JSON.stringify(payload)
                 })
 
                 if (!response.ok) {
@@ -144,7 +150,7 @@ export default {
                 if (data.ok) {
                     this.sensorStore.updateSensor(data.sensor)
 
-                    useToast().show(`Successfully updated sensor #${this.sensor.id}!`, "success")
+                    useToast().show(`Successfully updated sensor #${this.form.id}!`, "success")
 
                     this.emptyForm()
                 }
@@ -153,12 +159,12 @@ export default {
                 throw new Error(err.message)
             }
         },
-        async deleteSensor() {
+        async deleteSensor(sensorID, sensorName) {
             try {
-                const response = await fetch(`http://localhost:3000/api/sensor/${this.sensor.id}/delete`, {
+                const response = await fetch(`http://localhost:3000/api/sensor/${sensorID}/delete`, {
                     method: "POST",
                     headers: {"Content-Type": "application/json"},
-                    body: JSON.stringify({id: this.sensor.id})
+                    body: JSON.stringify({id: sensorID})
                 })
 
                 if (!response.ok) {
@@ -168,9 +174,9 @@ export default {
                 const data = await response.json()
 
                 if (data.ok) {
-                    this.sensorStore.removeSensor(this.sensor.id)
+                    this.sensorStore.removeSensor(sensorID)
 
-                    useToast().show(`Successfully deleted sensor #${this.sensor.id}`, "success")
+                    useToast().show(`Successfully deleted ${sensorName} (ID: ${sensorID})`, "success")
 
                     this.emptyForm()
                 }

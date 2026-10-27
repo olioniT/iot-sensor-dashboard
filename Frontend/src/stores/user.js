@@ -63,7 +63,7 @@ export const useUserStore = defineStore("user", {
             this.currentUser = user
         },
         getRoleOfUser(roleID) {
-            return this.roles.find(role => { return role.id === roleID })
+            return this.roles.find(role => role.id === roleID)
         },
         isUserAdmin() {
             if (this.currentUser.role === 1) {

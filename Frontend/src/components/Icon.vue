@@ -23,7 +23,9 @@ import {
     Trash,
     SquarePen,
     Eye,
-    Plus
+    Plus,
+    UserRoundCog,
+    UserRoundGroup
 } from "@lucide/vue";
 
 export default {
@@ -51,7 +53,9 @@ export default {
                 "delete": Trash,
                 "edit": SquarePen,
                 "view": Eye,
-                "plus": Plus
+                "plus": Plus,
+                "role": UserRoundCog,
+                "users": UserRoundGroup
             }
         }
     },

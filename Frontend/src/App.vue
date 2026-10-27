@@ -1,26 +1,24 @@
 <template id="app">
     <Toaster/>
-    <SensorDialog v-if="this.dialogs.state.sensorDialog" />
-    <UserDialog v-if="this.dialogs.state.userDialog"/>
+    <Dialogs />
     <component :is="currentLayout">
         <RouterView />
     </component>
 </template>
 
 <script>
-import Icon from './components/Icon.vue';
+import Icon from '@/components/Icon.vue';
 
 import Toaster from '@/components/Toaster.vue';
 
 import { useWebSocket } from '@/composables/useWebSocket.js';
 import { useDialogs } from '@/composables/useDialogs.js';
 
-import SensorDialog from "@/components/sensors/SensorDialog.vue"
-import UserDialog from '@/components/users/UserDialog.vue';
+import Dialogs from '@/components/dialogs/Dialogs.vue';
 
 export default {
     name: "App",
-    components: {Toaster, Icon, SensorDialog, UserDialog},
+    components: {Toaster, Icon, Dialogs},
     data() {
         return {
             dialogs: useDialogs()

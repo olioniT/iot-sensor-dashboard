@@ -1,4 +1,4 @@
-import { useUserStore } from '../stores/user.js';
+import { useUserStore } from '@/stores/user.js';
 import { createRouter, createWebHashHistory } from "vue-router"
 
 import LoginView from "../views/LoginView.vue"
@@ -21,36 +21,36 @@ const router = createRouter({
             path: "/login",
             name: "login",
             component: LoginView,
-            meta: { layout: AuthLayout }
+            meta: { requiresAuth: false, layout: AuthLayout }
         },
         {
             path: "/dashboard",
             name: "dashboard",
             component: DashboardView,
-            meta: { title: "Main Dashboard", subtitle: "Live overview of the current sensor data.", layout: DefaultLayout }
+            meta: { requiresAuth: true, title: "Main Dashboard", subtitle: "Live overview of the current sensor data.", layout: DefaultLayout }
         },
         {
             path: "/sensors",
             name: "sensors",
             component: SensorsView,
-            meta: { title: "Sensors List", subtitle: "List of every sensor.", layout: DefaultLayout }
+            meta: { requiresAuth: true, title: "Sensors List", subtitle: "List of every sensor.", layout: DefaultLayout }
         },
         {
             path: "/history/sensor/:id?",
             name: "history",
             component: HistoryView,
             props: true,
-            meta: { title: "History Overview", subtitle: "Trends and statistics for each sensor over time.", layout: DefaultLayout },
+            meta: { requiresAuth: true, title: "History Overview", subtitle: "Trends and statistics for each sensor over time.", layout: DefaultLayout },
         },
         {
             path: "/users",
             name: "users",
             component: UsersView,
-            meta: { title: "Users List", subtitle: "View every current user and their level of permissions.", layout: DefaultLayout }
+            meta: { requiresAuth: true, title: "Users List", subtitle: "Manage users and their permissions.", layout: DefaultLayout }
         },
         {
             path: '/:pathMatch(.*)*',
-            component: { template: '<h1>Route Not Found</h1>' }
+            redirect: "/dashboard"
         }
     ]
 })
@@ -60,11 +60,13 @@ router.beforeEach(async (to) => {
 
     const isLoggedIn = userStore.userIsLoggedIn()
 
-    if (!isLoggedIn && to.name !== "login") {
+    if (to.meta.requiresAuth && !isLoggedIn) {
         return "/login"
     }
-    return true
-    // authentication protection here
+
+    if (isLoggedIn && to.name === "login") {
+        return "/dashboard"
+    }
 })
 
 export default router
