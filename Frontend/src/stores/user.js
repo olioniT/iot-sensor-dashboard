@@ -71,6 +71,15 @@ export const useUserStore = defineStore("user", {
             } else {
                 return false
             }
+        },
+        removeUser(id) {
+            let user = this.users.find(u => u.id === id)
+            let index = this.users.indexOf(user)
+
+            this.users.splice(index, 1)
+        },
+        createUser(newUser) {
+            this.users.push(newUser)
         }
     }
 })

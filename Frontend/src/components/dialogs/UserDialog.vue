@@ -10,7 +10,12 @@
                     </span>
                     <span>
                         <p>Role</p>
-                        <DropDown placeholder="Role" :options="roles" :value="currentUser.role" />
+                        <DropDown
+                            placeholder="Role"
+                            :options="roles"
+                            :value="currentUser.role"
+                            @userPicked="(setRole) => currentUser.role = setRole"
+                        />
                     </span>
                 </span>
                 <span>
@@ -18,13 +23,15 @@
                     <input type="text" v-model="currentUser.name">
                 </span>
                 <span>
-                    <p>New Password (optional)</p>
+                    <p v-if="dialogs.state.userDialogType === 'existing'">New Password (optional)</p>
+                    <p v-if="dialogs.state.userDialogType === 'new'">Password</p>
                     <input type="text" v-model="currentUser.password">
                 </span>
             </div>
             <div id="actions">
                 <button class="secondary" @click="() => dialogs.dismissDialog()">Cancel</button>
-                <button class="primary">Save</button>
+                <button v-if="dialogs.state.userDialogType === 'new'" class="primary" @click="() => createNewUser()">Create</button>
+                <button v-if="dialogs.state.userDialogType === 'existing'" class="primary" @click="() => createNewUser()">Save</button>
             </div>
         </div>
     </div>
@@ -70,6 +77,48 @@ export default {
         },
         roles() {
             return this.userStore.getAllRoles.map(r => r.name)
+        }
+    },
+    methods: {
+        async createNewUser() {
+            try {
+                let user = this.currentUser
+                let role = this.userStore.getAllRoles.find(r => r.name === user.role)
+
+                if (user.username === "" || user.password === "" || user.role === "" || user.name === "") {
+                    throw new Error("Please fill in all the details.")
+                }
+
+                let newUser = {
+                    name: user.name,
+                    username: user.username,
+                    password: user.password,
+                    role: role.id
+                }
+
+                const response = await fetch("http://localhost:3000/api/user/create", {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify(newUser)
+                })
+
+                if (!response.ok) {
+                    throw new Error("Missing or invalid information.")
+                }
+
+                const data = await response.json()
+
+                if (data.ok) {
+                    this.userStore.createSensor(data.user)
+                    
+                    useToast().show(`Successfully created sensor #${data.user.id}`, "success")
+                    
+                    this.dialogs.dismissDialog()
+                }
+            } catch (err) {
+                console.error(err)
+                throw new Error(err.message)
+            }
         }
     }
 }

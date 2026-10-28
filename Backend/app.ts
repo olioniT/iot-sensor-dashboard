@@ -5,7 +5,7 @@ import { prisma } from "./prisma/prisma"
 import { createServer } from "http";
 import { WebSocketServer } from "ws"
 
-import { createSensor } from "./util";
+import { createSensor, createUser } from "./util";
 import { startSensorSimulation } from "./util";
 
 const PORT = process.env.PORT || 3000;
@@ -91,6 +91,7 @@ app.post('/api/sensor/:id/edit', async (req, res) => {
 
     if (!existingSensor) { res.status(401).json({ error: "Invalid sensor ID. Please try again." }) }
 
+    let last_edited = new Date().toISOString()
     const sensor = await prisma.sensor.update({
         where: { id: id },
             data: {
@@ -101,6 +102,7 @@ app.post('/api/sensor/:id/edit', async (req, res) => {
                 min_temperature: minTemp,
                 max_temperature: maxTemp,
                 update_interval: updateInterval,
+                last_edited: last_edited
             },
     });
     res.status(200).json({ ok: true, sensor })
@@ -128,6 +130,71 @@ app.get('/api/users', async (req, res) => {
     let users = await prisma.user.findMany()
 
     res.status(200).json(users)
+})
+
+app.post('/api/user/create', async (req, res) => {
+    try {
+        let { name, username, password, role } = req.body
+    
+        let existingUser = await prisma.user.findFirst({
+            where: { username: username }
+        })
+
+        if (existingUser) {
+            res.status(400).json({error: "Duplicate sensor name. Please change the name of your new sensor and try again."})
+        }
+
+        let newUser = await createUser(name, username, password, role)
+
+        res.status(200).json({ ok: true, user: newUser })
+    } catch (error) {
+        return res.status(500).json({error: "Unable to create new user. Please try again."})
+    }
+})
+
+app.post('/api/user/:id/edit', async (req, res) => {
+    let { id, name, username, newPassword, role } = req.body
+    
+    let existingUser = await prisma.user.findFirst({
+        where: {
+            id: id,
+        }
+    });
+
+    if (!existingUser) { res.status(401).json({ error: "Invalid user ID. Please try again." }) }
+
+    let last_edited = new Date().toISOString()
+    let hashedPassword = await bcrypt.hash(newPassword, 10)
+
+    const sensor = await prisma.user.update({
+        where: { id: id },
+            data: {
+                name: name,
+                username: username,
+                password: hashedPassword,
+                role: role,
+                last_edited: last_edited
+            },
+    });
+    res.status(200).json({ ok: true, sensor })
+})
+
+app.post('/api/user/:id/delete', async (req, res) => {
+    let { id } = req.body
+    
+    console.log("USER ID:", id)
+
+    let existingUser = await prisma.user.findFirst({
+        where: { id: id }
+    });
+    
+    if (!existingUser) { res.status(401).json({ error: "Invalid user ID. Please try again." }) }
+
+    await prisma.user.delete({
+        where: { id: id },
+    });
+
+    res.status(200).json({ ok: true })
 })
 
 app.get("/api/roles", async (req, res) => {

@@ -189,8 +189,6 @@ export const useSensorStore = defineStore("sensors", {
             this.sensors.splice(index, 1)
         },
         createSensor(newSensor) {
-            console.log(newSensor)
-
             this.sensors.push(newSensor)
         }
     }

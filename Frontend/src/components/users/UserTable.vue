@@ -40,7 +40,7 @@ export default {
             let user = this.userStore.getAllUsers.find(u => u.id === userID)
             let role = this.userStore.getAllRoles.find(r => r.id === user.role)
 
-            this.dialogs.showUserDialog(user.id, `Edit user #${user.id}`, () => {console.log("CANCELED")})
+            this.dialogs.showUserDialog(user.id, `Edit user #${user.id}`, "existing", () => {console.log("CANCELED")})
         }
     },
     async mounted() {

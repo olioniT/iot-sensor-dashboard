@@ -7,6 +7,7 @@ const state = reactive({
     userDialogTitle: "",
     userDialogID: "",
     userDialogCallback: "",
+    userDialogType: "",
     
     deleteDialog: false,
     deleteDialogTitle: "",
@@ -19,10 +20,11 @@ export function useDialogs() {
         state.sensorDialog = true
     }
     
-    const showUserDialog = (id, title, confirmCallback) => {
+    const showUserDialog = (id, title, type, confirmCallback) => {
         state.userDialog = true
-        state.userDialogTitle = title
         state.userDialogID = id
+        state.userDialogTitle = title
+        state.userDialogType = type
         state.userDialogCallback = confirmCallback
     }
     

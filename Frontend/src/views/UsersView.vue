@@ -21,7 +21,7 @@
             </div>
         </div>
         <UserTable @viewProfile="viewProfile"/>
-        <button class="secondary" @click="() => dialogs.showUserDialog(-1, 'Create a user', () => console.log('dwasdwasd'))">Create</button>
+        <button class="secondary" @click="() => dialogs.showUserDialog(-1, 'Create a new user', 'new', () => createUser())">Create</button>
     </div>
 </template>
 
@@ -90,6 +90,9 @@ export default {
                     description: ""
                 }
             }
+        },
+        createUser() {
+            
         }
     }
 }

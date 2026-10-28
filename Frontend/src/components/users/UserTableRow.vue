@@ -6,6 +6,7 @@
         <p id="role" :class="role?.name.toLowerCase()">{{ role?.name }}</p>
         <p>{{ formatJoinDate(user.join_date) }}</p>
         <div class="actions">
+            <button class="danger" @click="() => deleteUser(user.id)"><Icon icon="delete" color="var(--red-200)" size="16px" />Delete</button>
             <button class="primary" @click="() => showDataOfUser(user.id)"><Icon icon="edit" color="var(--blue-200)" size="16px" />Edit</button>
         </div>
     </div>
@@ -13,6 +14,8 @@
 
 <script>
 import { useUserStore } from '@/stores/user';
+
+import { useDialogs } from '@/composables/useDialogs';
 
 import Icon from '@/components/Icon.vue';
 
@@ -22,7 +25,8 @@ export default {
     components: {Icon},
     data() {
         return {
-            userStore: useUserStore()
+            userStore: useUserStore(),
+            dialogs: useDialogs()
         }
     },
     computed: {
@@ -42,6 +46,37 @@ export default {
         },
         showDataOfUser(id) {
             this.$emit("showDataOfUser", id)
+        },
+        deleteUser(id) {
+            let user = this.userStore.users.find(u => u.id === id)
+            let name = user.name
+
+            this.dialogs.showDeleteDialog("Delete user?", `Are you sure you want to delete ${user.name}?`, async () => {
+                try {
+                    const response = await fetch(`http://localhost:3000/api/user/${id}/delete`, {
+                        method: "POST",
+                        headers: {"Content-Type": "application/json"},
+                        body: JSON.stringify({id: id})
+                    })
+
+                    if (!response.ok) {
+                        throw new Error("Missing or invalid ID.")
+                    }
+
+                    const data = await response.json()
+
+                    if (data.ok) {
+                        this.userStore.removeUser(id)
+
+                        useToast().show(`Successfully deleted ${name} (ID: ${id})`, "success")
+
+                        this.emptyForm()
+                    }
+                } catch (err) {
+                    console.error(err)
+                    throw new Error(err.message)
+                } 
+            })
         }
     }
 }
@@ -77,6 +112,10 @@ export default {
 
 #role.user {
     background-color: var(--blue-450);
+}
+
+.actions {
+    gap: 10px;
 }
 
 .actions > button {
