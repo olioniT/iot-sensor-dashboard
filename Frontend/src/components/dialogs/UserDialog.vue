@@ -31,7 +31,7 @@
             <div id="actions">
                 <button class="secondary" @click="() => dialogs.dismissDialog()">Cancel</button>
                 <button v-if="dialogs.state.userDialogType === 'new'" class="primary" @click="() => createNewUser()">Create</button>
-                <button v-if="dialogs.state.userDialogType === 'existing'" class="primary" @click="() => createNewUser()">Save</button>
+                <button v-if="dialogs.state.userDialogType === 'existing'" class="primary" @click="() => saveExistingUser()">Save</button>
             </div>
         </div>
     </div>
@@ -42,6 +42,7 @@ import DropDown from '../DropDown.vue';
 
 import { useUserStore } from '@/stores/user.js';
 
+import { useToast } from '@/composables/useToast.js';
 import { useDialogs } from '@/composables/useDialogs.js';
 
 export default {
@@ -61,6 +62,7 @@ export default {
                 let role = this.userStore.getAllRoles.find(r => r.id === user.role)
 
                 return {
+                    id: user.id,
                     username: user.username,
                     password: "",
                     role: role.name,
@@ -68,6 +70,7 @@ export default {
                 }
             } else {
                 return {
+                    id: 0,
                     username: "",
                     password: "",
                     role: "",
@@ -80,6 +83,14 @@ export default {
         }
     },
     methods: {
+        emptyForm() {
+            this.currentUser = {
+                username: user.username,
+                password: "",
+                role: role.name,
+                name: user.name
+            }
+        },
         async createNewUser() {
             try {
                 let user = this.currentUser
@@ -109,15 +120,53 @@ export default {
                 const data = await response.json()
 
                 if (data.ok) {
-                    this.userStore.createSensor(data.user)
+                    this.userStore.createUser(data.user)
                     
-                    useToast().show(`Successfully created sensor #${data.user.id}`, "success")
+                    useToast().show(`Successfully created ${data.user.name} (ID: ${data.user.id})`, "success")
                     
+                    this.emptyForm()
                     this.dialogs.dismissDialog()
                 }
             } catch (err) {
                 console.error(err)
                 throw new Error(err.message)
+            }
+        },
+        async saveExistingUser() {
+            let user = this.currentUser
+            let role = this.userStore.getAllRoles.find(r => r.name === user.role)
+
+            console.log(user.password)
+
+            let updatedUser = {
+                id: user.id,
+                name: user.name,
+                username: user.username,
+                password: user.password ?? "",
+                role: role.id
+            }
+
+            console.log(user)
+
+            const response = await fetch(`http://localhost:3000/api/user/${updatedUser.id}/edit`, {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(updatedUser)
+            })
+
+            if (!response.ok) {
+                throw new Error("Missing or invalid information.")
+            }
+
+            const data = await response.json()
+
+            if (data.ok) {
+                this.userStore.updateUser(data.user)
+
+                useToast().show(`Successfully updated ${data.user.name} (ID: ${data.user.id})`, "success")
+
+                this.emptyForm()
+                this.dialogs.dismissDialog()
             }
         }
     }

@@ -80,6 +80,15 @@ export const useUserStore = defineStore("user", {
         },
         createUser(newUser) {
             this.users.push(newUser)
+        },
+        updateUser(updatedUser) {
+            let user = this.users.find(user => user.id === updatedUser.id)
+            
+            if (user) {
+                Object.assign(user, updatedUser)
+            } else {
+                this.users.push(updatedUser)
+            }
         }
     }
 })

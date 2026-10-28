@@ -42,7 +42,7 @@ export async function createUser(
 ) {
     const hashedPassword = await bcrypt.hash(password, 10)
 
-    await prisma.user.create({
+    const user = await prisma.user.create({
         data: {
             name: name,
             username: username,
@@ -50,6 +50,8 @@ export async function createUser(
             role: role,
         },
     });
+
+    return user
 }
 
 export async function createSensor(
