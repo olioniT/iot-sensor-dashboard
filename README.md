@@ -2,7 +2,7 @@
 
 ## Required Software/Environment
 The following are all that's required to run the desktop application.
-- NVM v2.0.0
+- [NVM v2.0.0](https://www.nvmnode.com/guide/download.html)
 
 To check your NVM version run the following:
 ```
@@ -17,7 +17,7 @@ Before beginning, open two separate terminal instances, one will act as your bac
 and
 `C:\...\iot-sensor-dashboard\Backend>`
 
-In `Backend`, run the following:
+In `...\Backend>`, run the following:
 ```
 C:\...\iot-sensor-dashboard\Backend> npm i
 C:\...\iot-sensor-dashboard\Backend> npx prisma generate
@@ -25,7 +25,7 @@ C:\...\iot-sensor-dashboard\Backend> npx prisma db seed
 C:\...\iot-sensor-dashboard\Backend> npm run dev
 ```
 
-In `Frontend` run the following:
+In `...\Frontend>` run the following:
 ```
 C:\...\iot-sensor-dashboard\Frontend> npm i
 C:\...\iot-sensor-dashboard\Frontend> npm run start
